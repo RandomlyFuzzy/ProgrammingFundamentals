@@ -26,31 +26,37 @@ public class PerlinNoiseShower extends ILevel {
     public void Update(ActionEvent ae) {
 
     }
-    double inc = 5;
-    double streach = 5;
-    double Magnification = 100;
+    double[] Cuttoffs = {0.74, 0.715, 0.485, 0.45, 0.375, 0.35, 0.325, 0.3, 0.275, 0.25, 0.225, 0.2, 0};
+    Color[] CuttoffColours = {Color.green, Color.LIGHT_GRAY, Color.DARK_GRAY, Color.LIGHT_GRAY, Color.green, Color.ORANGE, Color.blue, Color.ORANGE, Color.blue, Color.ORANGE, Color.blue, Color.ORANGE, Color.blue, Color.black};
+
+    //perlin scalers
+    double ScaleFactor = 2;
+    double streach = 2;
+    double Magnification = 400;
 
     @Override
     public void Draw(Graphics2D g) {
-        float x = getMousePos().getX();
-        float y = getMousePos().getY();
-        for (double i = 0.0; i < (double) Game.getWindowWidth()/(inc/streach); i += inc*streach) {
-            for (double j = 0.0; j < (double) Game.getWindowHeight()/(inc/streach); j += inc*streach) {
-                double noise = PerlinUtil.noise((i*streach) / Magnification+x/10, (j*streach) / Magnification+y/10, 255.0);
-                noise += 1.0;
-                noise /= 2.0;
-                noise *=4.0;
-                noise = Math.floor(noise);
-                if(noise == 1){
-                    noise = 0;
+        float x = getMousePos().getX() * (float) ScaleFactor;
+        float y = getMousePos().getY() * (float) ScaleFactor;
+        for (double j = 0.0; j < (double) Game.getWindowHeight() / (streach / ScaleFactor); j += ScaleFactor * streach) {
+            for (double i = 0.0; i < (double) Game.getWindowWidth() / (streach / ScaleFactor); i += ScaleFactor * streach) {
+                double noise = PerlinUtil.noise((i * streach) / Magnification + x / 10, (j * streach) / Magnification + y / 10, (Math.cos(getTime() * 2)) / 10.0);
+                noise += 2.0;
+                noise /= 4.0;
+//                noise *= 4.0;
+//                noise = Math.floor(noisse);
+                for (int k = 0; k < Cuttoffs.length; k++) {
+                    double f = Cuttoffs[k];
+                    if (noise >= f) {
+                        g.setColor(CuttoffColours[k]);
+                        break;
+                    }
                 }
-                if(noise == 2){
-                    noise = 3;
-                }
-                noise /=3.0;
-                
-                g.setColor(new Color((float) noise, (float) noise, (float) noise));
-                g.fillRect((int) (i*inc /streach), (int) (j * inc/streach), (int) (inc * streach), (int) (inc *streach));
+//                   g.setColor(new Color((float)noise,(float)noise,(float)noise));
+//                noise /= 4;
+//                g.setColor(new Color((float) noise, (float) noise, (float) noise));
+
+                g.fillRect((int) (i * (streach / ScaleFactor)), (int) (j * (streach / ScaleFactor)), (int) (ScaleFactor * streach), (int) (ScaleFactor * streach));
             }
         }
     }
