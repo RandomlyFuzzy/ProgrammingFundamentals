@@ -23,6 +23,7 @@ public class entry {
         new PerlinUtil();
         new Game(new PerlinNoiseShower());
         Game.toggleCursor();
+        Game.GetFrame().setTitle("Brand brawl");
     }
 
 }
