@@ -3,11 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package perlin.implementation;
+package com.Progfund;
 
 import com.Liamengine.Engine.AbstractClasses.ILevel;
+import com.Liamengine.Engine.Components.Vector;
 import com.Liamengine.Engine.Entry.Game;
 import com.Liamengine.Engine.Utils.LevelLoader;
+import com.Progfund.Levels.Leaderboard;
+import com.Progfund.Levels.Level1;
+import com.Progfund.Levels.MainMenu;
 
 /**
  *
@@ -19,10 +23,12 @@ public class entry {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        LevelLoader.LL.SetLevels(new ILevel[]{new PerlinNoiseShower()});
+        LevelLoader.LL.SetLevels(new ILevel[]{new MainMenu(),new Level1(),new Leaderboard()});
         new PerlinUtil();
-        new Game(new PerlinNoiseShower());
-        Game.toggleCursor();
+        new Game(new MainMenu());
+        Game.setDefualtLevel(new MainMenu());
+        Game.setWorldrelDims(new Vector(1,1));
+//        Game.toggleCursor();
         Game.GetFrame().setTitle("Brand brawl");
     }
 
