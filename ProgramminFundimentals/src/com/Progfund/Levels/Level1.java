@@ -9,7 +9,9 @@ import com.Liamengine.Engine.AbstractClasses.ILevel;
 import com.Liamengine.Engine.Components.Vector;
 import com.Liamengine.Engine.Entry.Game;
 import com.Progfund.Object.Menu.*;
+import com.Progfund.Object.inGame.Bullet;
 import com.Progfund.Object.inGame.LevelGenerator;
+import com.Progfund.Object.inGame.OverLay;
 import com.Progfund.Object.inGame.Player;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -24,18 +26,18 @@ import java.awt.event.KeyEvent;
 public class Level1 extends ILevel {
 
     private Player p;
-    
 
     @Override
     public void init() {
         Game.setWorldrelDims(new Vector(0.8f, 0.8f));
-        AddObject(new LevelGenerator(1));
-        p = new Player();
+        AddObject(new LevelGenerator(2));
+        p = new Player(1000);
         AddObject(p);
+        AddObject(new OverLay()).setIsCollidable(false);
         Mouse m = new Mouse();
         m.setScale(new Vector(4, 4));
         AddObject(m).setIsCollidable(false);
-//        AddObject(new LevelOverOverlay()).setIsCollidable(false);
+//        AddObject(new Bullet(new Vector(new Vector(70,0)), -Math.PI/2, 1000));
 
     }
 
@@ -45,11 +47,6 @@ public class Level1 extends ILevel {
 
     @Override
     public void Draw(Graphics2D gd) {
-        gd.setColor(Color.red);
-        Vector pos = (new Vector(10, Game.getWindowHeight()-50));
-        gd.drawString(p.getPosition().toString(), (int) pos.getX(), (int) pos.getY());
-        gd.drawString(""+getTime(), (int) pos.getX(), (int) pos.getY()-100);
-        gd.drawString(""+GetObjectCount(), (int) pos.getX(), (int) pos.getY()-200);
     }
 
     @Override

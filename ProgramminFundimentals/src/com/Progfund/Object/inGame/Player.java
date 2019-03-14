@@ -17,20 +17,23 @@ import java.awt.Graphics2D;
  *
  * @author RandomlyFuzzy
  */
-public class Player extends IDrawable {
+public class Player extends IDestroyable {
 
     private Vector Accerlation;
     private Vector Veclocity;
     private Vector speed = new Vector(3, 4);
     private double Delay = 0.1f, current = 0;
-
+    private boolean hasSpawned = false;
     private int horizontal = 0, vertical = 0;
+    private boolean HasFinished = false;
+    private int damage = 25;
 
-    public Player() {
-        super();
+    private static int Score = 0;
+
+    public Player(int health) {
+        super(health);
         Accerlation = new Vector(0, 0);
         Veclocity = new Vector(0, 0);
-
     }
 
     @Override
@@ -47,10 +50,17 @@ public class Player extends IDrawable {
         horizontal = val;
     }
 
-    private boolean hasSpawned = false;
+    public static int getScore() {
+        return Score;
+    }
+
+    public static void setScore(int Score) {
+        Player.Score = Score;
+    }
 
     @Override
     public void doMove() {
+
         if (!LevelOverOverlay.isFinished()) {
 
             Vector relpos = new Vector(Level().getMousePos()).add(new Vector(Game.getWindowWidth() / -2, Game.getWindowHeight() / -2));
@@ -59,11 +69,15 @@ public class Player extends IDrawable {
 //        addPosition(new Vector(new Vector(0,-1).mult(vertical).add(new Vector(1,0).mult(-horizontal))));
 
             if ((Level().isClicking() || Level().isDragging()) && (current + Delay) <= Level().getTime()) {
-                Level().AddObject(new Bullet(new Vector(getPosition()), getRotation()));
+                Level().AddObject(new Bullet(new Vector(getPosition()), getRotation(), damage));
                 current = Level().getTime();
             }
+            Transform.setOffsetTranslation(new Vector(getPosition()).mult(-1).add(new Vector(Game.getScaledWidth() / 2, Game.getScaledHeight() / 2)));
+            if (getHealth() <= 0) {
+                Level().AddObject(new LevelOverOverlay()).setIsCollidable(false);
+            }
         }
-        Transform.setOffsetTranslation(new Vector(getPosition()).mult(-1).add(new Vector(Game.getScaledWidth() / 2, Game.getScaledHeight() / 2)));
+
     }
 
     @Override

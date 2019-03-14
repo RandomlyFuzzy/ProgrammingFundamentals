@@ -8,7 +8,9 @@ package com.Progfund.Object.Menu;
 import com.Liamengine.Engine.AbstractClasses.IDrawable;
 import com.Liamengine.Engine.Components.Vector;
 import com.Liamengine.Engine.Entry.Game;
+import com.Liamengine.Engine.Utils.FileUtils;
 import com.Liamengine.Engine.Utils.LevelLoader;
+import com.Progfund.Object.inGame.Player;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +32,12 @@ import javax.swing.JTextField;
 public class LevelOverOverlay extends IDrawable {
 
     private static boolean finished = false;
+    private static boolean saved = false;
+    private static Button saveButton;
+
+    public static Button getSaveButton() {
+        return saveButton;
+    }
 
     public static boolean isFinished() {
         return finished;
@@ -38,7 +46,6 @@ public class LevelOverOverlay extends IDrawable {
     public static void setFinished(boolean finished) {
         LevelOverOverlay.finished = finished;
     }
-    private static boolean saved = false;
 
     public static boolean hassaved() {
         return saved;
@@ -57,14 +64,14 @@ public class LevelOverOverlay extends IDrawable {
                 System.out.println(".OnClick()");
             }
         }));
-        Level().AddObject(new Button(new Vector(0.5f, 0.8f), "save score", new HUDdelegate() {
+        saveButton = new Button(new Vector(0.5f, 0.8f), "save score", new HUDdelegate() {
             public void OnClick(Button b) {
                 if (LevelOverOverlay.hassaved()) {
                     return;
                 }
 
                 JButton button = new JButton("click me");
-                JTextField text = new JTextField("    put your name here    ");
+                JTextField text = new JTextField("Please enter your save name");
                 JLabel lable = new JLabel("Please input name");
                 JFrame frame = new JFrame();
                 JPanel panel = new JPanel();
@@ -72,10 +79,16 @@ public class LevelOverOverlay extends IDrawable {
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println(text.getText());
                         frame.setVisible(false);
+                        if (text.getText().trim().equals("Please enter your save name")) {
+                            return;
+                        }
+
+                        String file = LevelOverOverlay.getSaveButton().Level().getClass().getSimpleName();
+                        System.out.println(text.getText().trim());
                         LevelOverOverlay.setsaved(true);
-                        LevelLoader.LoadLevel(Game.getDefualtLevel());
+                        LevelOverOverlay.getSaveButton().setMessage("Saved as " + text.getText().trim());
+                        FileUtils.AppendToFile("resources/saveData/" + file + ".txt", text.getText().trim() + ":" + Player.getScore() + "\n");
                     }
                 });
 
@@ -87,7 +100,8 @@ public class LevelOverOverlay extends IDrawable {
                 frame.pack();
                 frame.setVisible(true);
             }
-        }));
+        });
+        Level().AddObject(saveButton);
         Level().AddObject(new Button(new Vector(0.75f, 0.8f), "Mainmenu", new HUDdelegate() {
             public void OnClick(Button b) {
                 LevelLoader.LoadLevel(Game.getDefualtLevel());
@@ -110,7 +124,9 @@ public class LevelOverOverlay extends IDrawable {
 
     public void dispose() {
         super.dispose();
-
+        saveButton = null;
+        saved = false;
+        finished = false;
     }
 
 }

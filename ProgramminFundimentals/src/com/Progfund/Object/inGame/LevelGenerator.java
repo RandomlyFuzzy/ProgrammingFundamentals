@@ -22,7 +22,7 @@ public class LevelGenerator extends IDrawable {
 
     private ArrayList<ArrayList<Boolean>> Map = new ArrayList<ArrayList<Boolean>>();
     private Random r;
-    private Vector Size = new Vector(Game.getWorldrelDims()).mult(400);
+    private Vector Size = new Vector(1,1).mult(400);
 
     public LevelGenerator(int seed) {
         r = new Random(seed);
@@ -42,7 +42,6 @@ public class LevelGenerator extends IDrawable {
 
     @Override
     public void doMove() {
-
     }
 
     @Override
@@ -58,10 +57,12 @@ public class LevelGenerator extends IDrawable {
                         && -Transform.getOffsetTranslation().getY() - Size.getY() < y
                         && -Transform.getOffsetTranslation().getY() + Game.getScaledHeight() + Size.getY() > y) {
                     if (Map.get(i).get(j)) {
-                        GetSprite(getRightImageFromPos(i, j));
+                        GetSprite(getRightImageFromPos("roadsprites/road_", i, j));
                     } else {
-                        GetSprite("/images/background_0.png");
+                        GetSprite(getRightImageFromPos("grassSprites/", i, j));
                     }
+
+                    CheckSorrounding(i,j);
 
                     gd.drawImage(getLastImage(), (int) ((i - (Map.size() / 2)) * Size.getX()), (int) ((j - (Map.size() / 2)) * Size.getY()), (int) Size.getX(), (int) Size.getY(), null);
                 }
@@ -69,64 +70,24 @@ public class LevelGenerator extends IDrawable {
         }
     }
 
-    public String getRightImageFromPos(int x, int y) {
+    public int CheckSorrounding(int x, int y) {
         boolean up = false, left = false, down = false, right = false;
         up = y == 0 ? false : Map.get(x).get(y - 1);
         left = x == 0 ? false : Map.get(x - 1).get(y);
         down = y == Map.get(x > Map.size() ? Map.size() - 1 : x).size() - 1 ? false : Map.get(x).get(y + 1);
         right = x == Map.size() - 1 ? false : Map.get(x + 1).get(y);
+        int ret =  ((up?1:0)<<3)+(((down?1:0)<<2)+((left?1:0)<<1)+(right?1:0));
+        System.out.println(ret);
+        return ret;
+    }
 
-        String ret = "/Images/";
-
-        if ((up && right && down) && !(left)) {
-            return ret + "Road_1_0.png";
-        }
-        if (left && right && down && !up) {
-            return ret + "Road_1_1.png";
-        }
-        if (up && left && down && !right) {
-            return ret + "Road_1_2.png";
-        }
-        if (up && left && right && !down) {
-            return ret + "Road_1_3.png";
-        }
-        if (up && left && !down && !right) {
-            return ret + "Road_0_0.png";
-        }
-        if (up && right && !down && !left) {
-            return ret + "Road_0_1.png";
-        }
-        if (down && right && !up && !left) {
-            return ret + "Road_0_2.png";
-        }
-        if (down && left && !right && !up) {
-            return ret + "Road_0_3.png";
-        }
-        if (down && up && !right && !left) {
-            return ret + "Road_2_0.png";
-        }
-        if (!down && !up && right && left) {
-            return ret + "Road_2_1.png";
-        }
-        if (up && !left && !down && !right) {
-            return ret + "Road_3_0.png";
-        }
-        if (right && !left && !down && !up) {
-            return ret + "Road_3_1.png";
-        }
-        if (down && !left && !right && !up) {
-            return ret + "Road_3_2.png";
-        }
-        if (left && !down && !right && !up) {
-            return ret + "Road_3_3.png";
-        }
-        if (!(up && left && down && right)) {
-            return ret + "Road_5_0.png";
-        }
-        if (up && left && down && right) {
-            return ret + "Road_4_0.png";
-        }
-        return "/images/background_1.png";
+    public String getRightImageFromPos(String prefix, int x, int y) {
+        boolean up = false, left = false, down = false, right = false;
+        up = y == 0 ? false : Map.get(x).get(y - 1);
+        left = x == 0 ? false : Map.get(x - 1).get(y);
+        down = y == Map.get(x > Map.size() ? Map.size() - 1 : x).size() - 1 ? false : Map.get(x).get(y + 1);
+        right = x == Map.size() - 1 ? false : Map.get(x + 1).get(y);
+        return "/Images/" + prefix + (up ? "t" : "f") + (down ? "t" : "f") + (left ? "t" : "f") + (right ? "t" : "f") + ".png";
     }
 
     @Override

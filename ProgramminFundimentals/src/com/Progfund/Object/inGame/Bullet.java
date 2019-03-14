@@ -19,12 +19,14 @@ import java.awt.Graphics2D;
 public class Bullet extends IDrawable {
 
     private Vector Acc;
+    private int damage = 0;
 
-    public Bullet(Vector start, double rot) {
+    public Bullet(Vector start, double rot, int Damage) {
         setPosition(start);
-        addPosition(new Vector((float) rot).mult(25));
-        this.Acc = new Vector((float) rot).mult(300);
         setRotation(rot);
+        addPosition(new Vector((float) rot).mult(30));
+        this.Acc = new Vector((float) rot).mult(300);
+        this.damage = Damage;
     }
 
     @Override
@@ -52,6 +54,15 @@ public class Bullet extends IDrawable {
 
     @Override
     public void onCollison(IDrawable id) {
+        if (!(id instanceof IDestroyable)) {
+            return;
+        }
+
+        IDestroyable des = (IDestroyable) id;
+        des.Damage(damage);
+        System.out.println("com.Progfund.Object.inGame.Bullet.onCollison() " + des.getHealth());
+        Level().RemoveObject(this);
+
         System.out.println("com.Progfund.Object.inGame.Bullet.onCollison() " + id.getClass().getName().toString());
     }
 
