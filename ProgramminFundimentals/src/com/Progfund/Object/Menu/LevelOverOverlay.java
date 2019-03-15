@@ -88,7 +88,7 @@ public class LevelOverOverlay extends IDrawable {
                         System.out.println(text.getText().trim());
                         LevelOverOverlay.setsaved(true);
                         LevelOverOverlay.getSaveButton().setMessage("Saved as " + text.getText().trim());
-                        FileUtils.AppendToFile("resources/saveData/" + file + ".txt", text.getText().trim() + ":" + Player.getScore() + "\n");
+                        FileUtils.AppendToFile("resources/saveData/" + file + ".txt", text.getText().trim() + ":" + Player.getPlayerScore()+ "\n");
                     }
                 });
 

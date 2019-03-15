@@ -6,6 +6,8 @@
 package com.Progfund.Object.inGame;
 
 import com.Liamengine.Engine.AbstractClasses.IDrawable;
+import com.Liamengine.Engine.Components.Vector;
+import com.Progfund.HashUtils;
 import java.awt.Graphics2D;
 
 /**
@@ -17,7 +19,28 @@ public abstract class IDestroyable extends IDrawable {
     private int Health = 0;
     private int MaxHealth = 40;
     private int refHash = -1;
-    private static int Allrefs = 0;
+    private int scoreToAdd = 20;
+
+    private Vector[] refs = new Vector[2];
+
+    IDestroyable() {
+        super();
+        refHash = -1;
+        IDestroyableManager.Add(this);
+    }
+
+    public IDestroyable(int MaxHealth) {
+        this();
+        setMaxHealth(MaxHealth);
+    }
+
+    public Vector[] getHashVecs() {
+        return refs;
+    }
+
+    public int getRefHash() {
+        return refHash;
+    }
 
     public int getHealth() {
         return Health;
@@ -36,24 +59,14 @@ public abstract class IDestroyable extends IDrawable {
         this.MaxHealth = MaxHealth;
     }
 
-    public IDestroyable() {
-        super();
-        refHash = -1;
-        OverLay.AddObject(this);
+    public int getScore() {
+        return scoreToAdd;
     }
 
-//    public IDestroyable(int hash) {
-//        super();
-//        refHash = hash;
-//        setMaxHealth(MaxHealth);
-//        OverLay.AddObject(this);
-//    }
-
-    public IDestroyable(int MaxHealth, int hash) {
-        super();
-        refHash = hash;
-        setMaxHealth(MaxHealth);
-        OverLay.AddObject(this);
+    public void SetHashParams() {
+        refs[0] = getPosition();
+        refs[1] = new Vector(getMaxHealth());
+        refHash = HashUtils.hash(getHashVecs()[0], getHashVecs()[1]);
     }
 
     public abstract void init();

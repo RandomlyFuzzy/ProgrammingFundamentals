@@ -27,7 +27,6 @@ public class Player extends IDestroyable {
     private int horizontal = 0, vertical = 0;
     private boolean HasFinished = false;
     private int damage = 25;
-
     private static int Score = 0;
 
     public Player(int health) {
@@ -39,7 +38,7 @@ public class Player extends IDestroyable {
     @Override
     public void init() {
         GetSprite("/images/player.png");
-
+        SetHashParams();
     }
 
     public void SetVerticalDir(int val) {
@@ -50,14 +49,20 @@ public class Player extends IDestroyable {
         horizontal = val;
     }
 
-    public static int getScore() {
-        return Score;
+    /**
+     *
+     * @return
+     */
+    public static int getPlayerScore() {
+        return Player.Score;
     }
 
     public static void setScore(int Score) {
         Player.Score = Score;
     }
-
+    public static void addScore(int Score) {
+        Player.Score += Score;
+    }
     @Override
     public void doMove() {
 
@@ -82,6 +87,9 @@ public class Player extends IDestroyable {
 
     @Override
     public void Update(Graphics2D gd) {
+        gd.setColor(Color.red);
+        gd.drawString("" + getPlayerScore(), 0, 40);
+        gd.drawString("" + Level().GetObjectCount(), 0, -40);
 
         DrawLastLoadedImage(gd);
     }

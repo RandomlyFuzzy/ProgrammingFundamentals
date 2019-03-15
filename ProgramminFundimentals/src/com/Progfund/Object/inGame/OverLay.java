@@ -20,14 +20,8 @@ import java.util.ArrayList;
  */
 public class OverLay extends IDrawable {
 
-    private static ArrayList<IDestroyable> ShowTop = new ArrayList<IDestroyable>();
-
     private int w = 70;
     private int h = 25;
-
-    public static void AddObject(IDestroyable val) {
-        ShowTop.add(val);
-    }
 
     @Override
     public void init() {
@@ -42,8 +36,8 @@ public class OverLay extends IDrawable {
 
     @Override
     public void Update(Graphics2D gd) {
-        for (IDestroyable obj : ShowTop) {
-            if (obj.getHealth() != obj.getMaxHealth()) {
+        for (IDestroyable obj : IDestroyableManager.getInstance()) {
+            if (obj.getHealth() != obj.getMaxHealth()&&obj.getHealth()>0) {
                 int x = (int) (obj.getPosition().getX() - (w / 2));
                 int y = (int) (obj.getPosition().getY() - (h / 2)) - 50;
                 gd.setColor(Color.GRAY);
@@ -52,17 +46,16 @@ public class OverLay extends IDrawable {
                 gd.fillRect(x, y, (int) (w * ((float) obj.getHealth() / (float) obj.getMaxHealth())), h);
             }
         }
+//        gd.drawLine((int)(-Transform.getOffsetTranslation().getX() - (Game.getScaledWidth())),(int)(-Transform.getOffsetTranslation().getY()- (Game.getScaledHeight())),(int)(-Transform.getOffsetTranslation().getX() + (Game.getScaledWidth()*2)),(int)(-Transform.getOffsetTranslation().getY() + (Game.getScaledHeight()*2)));
     }
 
     @Override
     public void onCollison(IDrawable id) {
     }
 
-    public void dispose(){
+    public void dispose() {
         super.dispose();
-        ShowTop = new ArrayList<>();
-    
+
     }
-    
-    
+
 }

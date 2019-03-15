@@ -42,10 +42,10 @@ public class Bullet extends IDrawable {
     @Override
     public void Update(Graphics2D gd) {
 
-        if (-Transform.getOffsetTranslation().getX() < getPosition().getX()
-                && -Transform.getOffsetTranslation().getX() + Game.getScaledWidth() > getPosition().getX()
-                && -Transform.getOffsetTranslation().getY() < getPosition().getY()
-                && -Transform.getOffsetTranslation().getY() + Game.getScaledHeight() > getPosition().getY()) {
+        if (((-Transform.getOffsetTranslation().getX() - (Game.getScaledWidth()) < getPosition().getX()
+                && (-Transform.getOffsetTranslation().getX() + (Game.getScaledWidth() * 2)) > getPosition().getX()
+                && (-Transform.getOffsetTranslation().getY() - (Game.getScaledHeight())) < getPosition().getY()
+                && (-Transform.getOffsetTranslation().getY() + (Game.getScaledHeight() * 2)) > getPosition().getY()))) {
             DrawLastLoadedImage(gd);
         } else {
             Level().RemoveObject(this);

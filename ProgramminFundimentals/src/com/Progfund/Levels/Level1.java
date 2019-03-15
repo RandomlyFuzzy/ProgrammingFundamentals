@@ -12,6 +12,7 @@ import com.Progfund.Object.Menu.*;
 import com.Progfund.Object.inGame.Bullet;
 import com.Progfund.Object.inGame.LevelGenerator;
 import com.Progfund.Object.inGame.OverLay;
+import com.Progfund.Object.inGame.ParticalGenerator;
 import com.Progfund.Object.inGame.Player;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -32,11 +33,13 @@ public class Level1 extends ILevel {
         Game.setWorldrelDims(new Vector(0.8f, 0.8f));
         AddObject(new LevelGenerator(2));
         p = new Player(1000);
+        p.setPosition(100.1f,200f);
         AddObject(p);
         AddObject(new OverLay()).setIsCollidable(false);
         Mouse m = new Mouse();
         m.setScale(new Vector(4, 4));
         AddObject(m).setIsCollidable(false);
+        AddObject(new ParticalGenerator());
 //        AddObject(new Bullet(new Vector(new Vector(70,0)), -Math.PI/2, 1000));
 
     }
