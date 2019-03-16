@@ -24,7 +24,8 @@ public class Bullet extends IDrawable {
     public Bullet(Vector start, double rot, int Damage) {
         setPosition(start);
         setRotation(rot);
-        addPosition(new Vector((float) rot).mult(30));
+        addPosition(new Vector((float) rot).mult(35));
+        setScale(new Vector(3, 2));
         this.Acc = new Vector((float) rot).mult(300);
         this.damage = Damage;
     }
@@ -36,20 +37,19 @@ public class Bullet extends IDrawable {
 
     @Override
     public void doMove() {
-        addPosition(new Vector(Acc).mult(Game.getDelta()));
-    }
-
-    @Override
-    public void Update(Graphics2D gd) {
-
         if (((-Transform.getOffsetTranslation().getX() - (Game.getScaledWidth()) < getPosition().getX()
                 && (-Transform.getOffsetTranslation().getX() + (Game.getScaledWidth() * 2)) > getPosition().getX()
                 && (-Transform.getOffsetTranslation().getY() - (Game.getScaledHeight())) < getPosition().getY()
                 && (-Transform.getOffsetTranslation().getY() + (Game.getScaledHeight() * 2)) > getPosition().getY()))) {
-            DrawLastLoadedImage(gd);
+            addPosition(new Vector(Acc).mult(Game.getDelta()));
         } else {
             Level().RemoveObject(this);
         }
+    }
+
+    @Override
+    public void Update(Graphics2D gd) {
+        DrawLastLoadedImage(gd);
     }
 
     @Override

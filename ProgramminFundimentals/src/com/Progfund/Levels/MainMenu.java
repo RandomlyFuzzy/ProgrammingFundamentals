@@ -12,7 +12,6 @@ import com.Liamengine.Engine.Utils.LevelLoader;
 import com.Liamengine.Engine.Utils.MusicUtils;
 import com.Liamengine.Engine.Utils.imageUtils;
 import com.Progfund.Object.Menu.*;
-import com.Progfund.Object.inGame.SpawnPoints;
 import com.sun.imageio.plugins.common.ImageUtil;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -26,6 +25,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.Clip;
 
 /**
  *
@@ -34,6 +34,11 @@ import java.util.logging.Logger;
 public class MainMenu extends ILevel {
 
     BufferedImage bg;
+
+    public MainMenu() {
+        setStopAudioOnStart(false);
+        setSimpleCollison(true);
+    }
 
     @Override
     public void init() {
@@ -56,7 +61,7 @@ public class MainMenu extends ILevel {
             }
         }));
 
-        AddObject(new toggle(new Vector(0.95f, 0.88f), "hello world", new HUDdelegate() {
+        AddObject(new toggle(new Vector(0.95f, 0.88f), new HUDdelegate() {
             public void OnClick(toggle b) {
                 MusicUtils.SetVolume(b.IsTicked() ? 1 : 0);
             }
@@ -69,6 +74,7 @@ public class MainMenu extends ILevel {
                 bg = GetSprite("background");
             }
         }).start();
+//        play("/music/music.wav", 0, Clip.LOOP_CONTINUOUSLY);
 
     }
 

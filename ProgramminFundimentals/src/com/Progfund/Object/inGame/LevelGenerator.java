@@ -9,6 +9,8 @@ import com.Liamengine.Engine.AbstractClasses.IDrawable;
 import com.Liamengine.Engine.Components.Transform;
 import com.Liamengine.Engine.Components.Vector;
 import com.Liamengine.Engine.Entry.Game;
+import com.Progfund.HashUtils;
+import com.Progfund.Object.Menu.LevelOverOverlay;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -23,25 +25,38 @@ public class LevelGenerator extends IDrawable {
     private ArrayList<ArrayList<Boolean>> Map = new ArrayList<ArrayList<Boolean>>();
     private Random r;
     private Random spawns;
-    private Vector Size = new Vector(1, 1).mult(700);
+    private Vector Size = new Vector(1, 1).mult(500);
+    private int difficulty = 1;
     private Vector[] places = {
+        //for enemys
         Vector.Zero(),
-        new Vector(Size.getX(), 0),
-        new Vector(Size.getX(), Size.getY()),
-        new Vector(0, Size.getY())
+        new Vector(1, 0),
+        new Vector(1, 1),
+        new Vector(0, 1),
+        //for cars
+        Vector.One().mult(0.25f),
+        new Vector(0.75f, 0.25f),
+        new Vector(0.75f, 0.75f),
+        new Vector(0.25f, 0.75f),
+        //for grass
+        new Vector(0.5f, 0.25f),
+        new Vector(0.75f, 0.5f),
+        new Vector(0.5f, 0.75f),
+        new Vector(0.25f, 0.5f)
     };
 
-    public LevelGenerator(int seed) {
+    public LevelGenerator(int seed, int difficulty) {
         r = new Random(seed);
         spawns = new Random(seed);
+        this.difficulty = difficulty;
     }
 
     @Override
     public void init() {
         setIsCollidable(false);
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 500; i++) {
             Map.add(new ArrayList<Boolean>());
-            for (int j = 0; j < 200; j++) {
+            for (int j = 0; j < 500; j++) {
                 Map.get(i).add(r.nextBoolean());
             }
         }
@@ -60,35 +75,94 @@ public class LevelGenerator extends IDrawable {
                 int x = (int) ((i - (Map.size() / 2)) * Size.getX());
                 int y = (int) ((j - (Map.size() / 2)) * Size.getY());
                 //this if statment makes only things that are able to be seen displayed 
-
-                if (-Transform.getOffsetTranslation().getX() - Size.getX() < x
+                boolean inside
+                        = (-Transform.getOffsetTranslation().getX() - Size.getX() < x
                         && -Transform.getOffsetTranslation().getX() + Game.getScaledWidth() + Size.getY() > x
                         && -Transform.getOffsetTranslation().getY() - Size.getY() < y
-                        && -Transform.getOffsetTranslation().getY() + Game.getScaledHeight() + Size.getY() > y) {
+                        && -Transform.getOffsetTranslation().getY() + Game.getScaledHeight() + Size.getY() > y);
+                //checks inside a 3 times the size of the screen rectangle that has the screen in the middle
+                if (!((-Transform.getOffsetTranslation().getX() - (Game.getScaledWidth()) < x
+                        && (-Transform.getOffsetTranslation().getX() + (Game.getScaledWidth() * 2)) > x
+                        && (-Transform.getOffsetTranslation().getY() - (Game.getScaledHeight())) < y
+                        && (-Transform.getOffsetTranslation().getY() + (Game.getScaledHeight() * 2)) > y))) {
+                    continue;
+                }
+
+                if (inside) {
                     if (Map.get(i).get(j)) {
                         GetSprite(getRightImageFromPos("roadsprites/road_", i, j));
                     } else {
                         GetSprite(getRightImageFromPos("grassSprites/", i, j));
                     }
-
-                    CheckSorrounding(i, j);
-
                     gd.drawImage(getLastImage(), (int) ((i - (Map.size() / 2)) * Size.getX()), (int) ((j - (Map.size() / 2)) * Size.getY()), (int) Size.getX(), (int) Size.getY(), null);
-                } else 
-                    //spawns things of the screen but not too far from the camera positions
-                    if (((-Transform.getOffsetTranslation().getX() - (Game.getScaledWidth()) < x
-                        && (-Transform.getOffsetTranslation().getX() + (Game.getScaledWidth() * 2)) > x
-                        && (-Transform.getOffsetTranslation().getY() - (Game.getScaledHeight())) < y
-                        && (-Transform.getOffsetTranslation().getY() + (Game.getScaledHeight() * 2)) > y))) {
-                    int pos = spawns.nextInt(12);
-                    if (pos <= 3) {
-                        Vector Place = new Vector(x, y).add(new Vector(places[pos]));
+                } else if (!LevelOverOverlay.isFinished()) {
 
-                        if (IDestroyableManager.willBeUnique(Place, new Vector(100))) {
+                    int pos = spawns.nextInt(12);
+                    if (pos <= 3) //places enemys
+                    {
+                        Vector Place = new Vector(x, y).add(new Vector(places[pos]).mult(Size));
+                        if (IDestroyableManager.willBeUnique(Place, new Vector(100)) && HashUtils.hash(Place, new Vector(100)) % difficulty == 0) {
                             Enemy e = new Enemy(100);
                             e.setPosition(Place);
                             e.SetHashParams();
                             Level().AddObject(e);
+                        }
+                    } else //places other 
+                    {
+                        int sorrounings = CheckSorrounding(i, j);
+
+                        if (Map.get(i).get(j)) //road 
+                        {
+                            boolean Rotate = (pos % 2 == 0
+                                    && ((sorrounings & 8) == 8
+                                    || (sorrounings & 4) == 4
+                                    || (sorrounings & 2) != 2
+                                    || (sorrounings & 1) != 1));
+
+                            Vector Place = new Vector(x, y).add(new Vector(places[(pos) % 4 + 8]).mult(Size));
+                            if (IDestroyableManager.willBeUnique(Place, new Vector(100)) && HashUtils.hash(Place, new Vector(50)) % difficulty == 0) {
+                                if (sorrounings != 0) {
+                                    RandomObject e = new RandomObject(50);
+                                    e.setPosition(Place);
+                                    e.setScale(new Vector(0.6f, 0.6f));
+                                    e.SetHashParams();
+                                    if (Rotate) {
+                                        e.setRotation(Math.PI / 2);
+                                    }
+                                    e.GetSprite("/images/car" + (spawns.nextInt(3) + 1) + ".png");
+                                    Level().AddObject(e);
+                                } else {
+                                    person p = new person(25,100);
+                                    p.setPosition(Place);
+                                    p.SetHashParams();
+                                    p.GetSprite("/images/person.png");
+                                    Level().AddObject(p);
+                                }
+                            }
+
+                        } else//grass
+                        {
+
+                            Vector Place = new Vector(x, y).add(new Vector(places[(pos) % 4 + 4]).mult(Size));
+                            if (IDestroyableManager.willBeUnique(Place, new Vector(100)) ) {
+                                if (sorrounings != 15&& HashUtils.hash(Place, new Vector(50)) % difficulty == 0) {
+                                    RandomObject e = new RandomObject(50);
+                                    e.setPosition(Place);
+                                    e.setScale(new Vector(2f, 2f));
+                                    e.SetHashParams();
+//                                    if (Rotate) {
+//                                        e.setRotation(Math.PI / 2);
+//                                    }
+                                    e.GetSprite("/images/bin.png");
+                                    Level().AddObject(e);
+                                } else if (sorrounings == 15){
+                                    person p = new person(25,100);
+                                    p.setPosition(Place);
+                                    p.SetHashParams();
+                                    p.GetSprite("/images/person.png");
+                                    Level().AddObject(p);
+                                }
+                            }
                         }
                     }
                 }

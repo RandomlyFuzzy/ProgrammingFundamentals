@@ -21,7 +21,6 @@ import java.awt.Toolkit;
  */
 public class toggle extends IDrawable {
 
-    private String Message = "";
     private Vector relpos = Vector.One();
     private boolean isTicked = false;
 
@@ -33,15 +32,8 @@ public class toggle extends IDrawable {
 
     }
 
-    public toggle(String Message, HUDdelegate Logic) {
+    public toggle(Vector relpos, HUDdelegate Logic) {
         super();
-        this.Message = Message;
-        buttonDelegate = Logic;
-    }
-
-    public toggle(Vector relpos, String Message, HUDdelegate Logic) {
-        super();
-        this.Message = Message;
         this.buttonDelegate = Logic;
         this.relpos = relpos;
         GetSprite("/images/toggle" + (isTicked ? "On" : "Off") + ".png");
@@ -94,12 +86,6 @@ public class toggle extends IDrawable {
         this.isTicked = isTicked;
     }
 
-    public String getMessage() {
-        return Message;
-    }
-
-    public void setMessage(String Message) {
-        this.Message = Message;
-    }
+  
 
 }

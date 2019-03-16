@@ -39,7 +39,7 @@ public class OverLay extends IDrawable {
         for (IDestroyable obj : IDestroyableManager.getInstance()) {
             if (obj.getHealth() != obj.getMaxHealth()&&obj.getHealth()>0) {
                 int x = (int) (obj.getPosition().getX() - (w / 2));
-                int y = (int) (obj.getPosition().getY() - (h / 2)) - 50;
+                int y = (int) (obj.getPosition().getY() - (h / 2)) - (int)new Vector(obj.getScaledSpriteWidth(),obj.getScaledSpriteHeight()).Lengthsqrt();;
                 gd.setColor(Color.GRAY);
                 gd.fillRect(x - 2, y - 2, w + 4, h + 4);
                 gd.setColor(Color.red);

@@ -21,6 +21,8 @@ public abstract class IDestroyable extends IDrawable {
     private int refHash = -1;
     private int scoreToAdd = 20;
 
+   
+
     private Vector[] refs = new Vector[2];
 
     IDestroyable() {
@@ -58,10 +60,13 @@ public abstract class IDestroyable extends IDrawable {
         Health = MaxHealth;
         this.MaxHealth = MaxHealth;
     }
-
+    public void setScoreToAdd(int scoreToAdd) {
+        this.scoreToAdd = scoreToAdd;
+    }
     public int getScore() {
         return scoreToAdd;
     }
+
 
     public void SetHashParams() {
         refs[0] = getPosition();

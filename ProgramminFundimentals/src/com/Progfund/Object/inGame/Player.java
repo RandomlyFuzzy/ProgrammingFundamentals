@@ -28,11 +28,14 @@ public class Player extends IDestroyable {
     private boolean HasFinished = false;
     private int damage = 25;
     private static int Score = 0;
+    private static int scoreNeeded = 0;
 
-    public Player(int health) {
+    public Player(int health, int scoreneeded) {
         super(health);
         Accerlation = new Vector(0, 0);
         Veclocity = new Vector(0, 0);
+        Score = 0;
+        scoreNeeded = scoreneeded;
     }
 
     @Override
@@ -49,6 +52,14 @@ public class Player extends IDestroyable {
         horizontal = val;
     }
 
+    public static int getScoreNeeded() {
+        return scoreNeeded;
+    }
+
+    public static void setScoreNeeded(int scoreNeeded) {
+        Player.scoreNeeded = scoreNeeded;
+    }
+
     /**
      *
      * @return
@@ -60,9 +71,11 @@ public class Player extends IDestroyable {
     public static void setScore(int Score) {
         Player.Score = Score;
     }
+
     public static void addScore(int Score) {
         Player.Score += Score;
     }
+
     @Override
     public void doMove() {
 
