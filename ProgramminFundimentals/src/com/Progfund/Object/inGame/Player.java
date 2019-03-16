@@ -100,10 +100,6 @@ public class Player extends IDestroyable {
 
     @Override
     public void Update(Graphics2D gd) {
-        gd.setColor(Color.red);
-        gd.drawString("" + getPlayerScore(), 0, 40);
-        gd.drawString("" + Level().GetObjectCount(), 0, -40);
-
         DrawLastLoadedImage(gd);
     }
 

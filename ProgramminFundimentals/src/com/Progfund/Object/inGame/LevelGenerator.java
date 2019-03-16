@@ -42,7 +42,9 @@ public class LevelGenerator extends IDrawable {
         new Vector(0.5f, 0.25f),
         new Vector(0.75f, 0.5f),
         new Vector(0.5f, 0.75f),
-        new Vector(0.25f, 0.5f)
+        new Vector(0.25f, 0.5f),
+        //for the pickups
+        new Vector( 0.5f, 0.5f) 
     };
 
     public LevelGenerator(int seed, int difficulty) {
@@ -97,7 +99,9 @@ public class LevelGenerator extends IDrawable {
                     gd.drawImage(getLastImage(), (int) ((i - (Map.size() / 2)) * Size.getX()), (int) ((j - (Map.size() / 2)) * Size.getY()), (int) Size.getX(), (int) Size.getY(), null);
                 } else if (!LevelOverOverlay.isFinished()) {
 
-                    int pos = spawns.nextInt(12);
+                    
+                    
+                    int pos = spawns.nextInt(13);
                     if (pos <= 3) //places enemys
                     {
                         Vector Place = new Vector(x, y).add(new Vector(places[pos]).mult(Size));
@@ -107,7 +111,7 @@ public class LevelGenerator extends IDrawable {
                             e.SetHashParams();
                             Level().AddObject(e);
                         }
-                    } else //places other 
+                    } else if (pos <= 11) //places other 
                     {
                         int sorrounings = CheckSorrounding(i, j);
 
@@ -132,7 +136,7 @@ public class LevelGenerator extends IDrawable {
                                     e.GetSprite("/images/car" + (spawns.nextInt(3) + 1) + ".png");
                                     Level().AddObject(e);
                                 } else {
-                                    person p = new person(25,100);
+                                    person p = new person(25, 100);
                                     p.setPosition(Place);
                                     p.SetHashParams();
                                     p.GetSprite("/images/person.png");
@@ -144,8 +148,8 @@ public class LevelGenerator extends IDrawable {
                         {
 
                             Vector Place = new Vector(x, y).add(new Vector(places[(pos) % 4 + 4]).mult(Size));
-                            if (IDestroyableManager.willBeUnique(Place, new Vector(100)) ) {
-                                if (sorrounings != 15&& HashUtils.hash(Place, new Vector(50)) % difficulty == 0) {
+                            if (IDestroyableManager.willBeUnique(Place, new Vector(100))) {
+                                if (sorrounings != 15 && HashUtils.hash(Place, new Vector(50)) % difficulty == 0) {
                                     RandomObject e = new RandomObject(50);
                                     e.setPosition(Place);
                                     e.setScale(new Vector(2f, 2f));
@@ -155,13 +159,25 @@ public class LevelGenerator extends IDrawable {
 //                                    }
                                     e.GetSprite("/images/bin.png");
                                     Level().AddObject(e);
-                                } else if (sorrounings == 15){
-                                    person p = new person(25,100);
+                                } else if (sorrounings == 15) {
+                                    person p = new person(25, 100);
                                     p.setPosition(Place);
                                     p.SetHashParams();
                                     p.GetSprite("/images/person.png");
                                     Level().AddObject(p);
                                 }
+                            }
+                        }
+                    } else {
+                        Vector Place = new Vector(x, y).add(new Vector(places[(pos) ]).mult(Size));
+                        if (IDestroyableManager.willBeUnique(Place, new Vector(100))) {
+                            if (HashUtils.hash(Place, new Vector(300)) % difficulty == 0) {
+                                PickUp e = new PickUp(300);
+                                e.setPosition(Place);
+                                e.setScale(new Vector(2f, 2f));
+                                e.SetHashParams();
+                                e.GetSprite("/images/bin.png");
+                                Level().AddObject(e);
                             }
                         }
                     }

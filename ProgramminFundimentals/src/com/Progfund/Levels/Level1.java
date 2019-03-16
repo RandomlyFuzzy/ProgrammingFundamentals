@@ -28,7 +28,7 @@ import javax.sound.sampled.Clip;
 public class Level1 extends ILevel {
 
     private Player p;
-    private int ScoretoWin = 300;
+    private int ScoretoWin = 2000;
 
     public Level1() {
         setSimpleCollison(false);
@@ -36,18 +36,17 @@ public class Level1 extends ILevel {
 
     @Override
     public void init() {
-        Game.setWorldrelDims(new Vector(0.6f, 0.6f));
+        Game.setWorldrelDims(new Vector(0.8f, 0.8f));
         AddObject(new LevelGenerator(2,5));
-        p = new Player(1000,30);
+        p = new Player(200,30);
         p.setPosition(100.1f, 200f);
+        Player.setScoreNeeded(ScoretoWin);
         AddObject(p);
         AddObject(new OverLay()).setIsCollidable(false);
         Mouse m = new Mouse();
         m.setScale(new Vector(4, 4));
         AddObject(m).setIsCollidable(false);
         AddObject(new ParticalGenerator());
-
-//        AddObject(new Bullet(new Vector(new Vector(70,0)), -Math.PI/2, 1000));
     }
 
     @Override
