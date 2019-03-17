@@ -1,10 +1,3 @@
-good score:9680
-bestscore:6680
-I win:5540
-Score:3440
-Score:3000
-bestscore:2360
-win:2180
-i Won _):1920
-best score ever:1660
-Liam:1340
+score:2080
+got a score:0
+__:0

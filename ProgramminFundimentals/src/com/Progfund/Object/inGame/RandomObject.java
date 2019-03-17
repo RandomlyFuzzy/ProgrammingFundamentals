@@ -21,14 +21,34 @@ public class RandomObject extends IDestroyable {
     private double current = 0;
     private double Delay = 0.8;
 
+    /**
+     *
+     * @param StartingHealth
+     */
     public RandomObject(int StartingHealth) {
         super(StartingHealth);
     }
 
+    /**
+     *
+     * @param StartingHealth
+     * @param points
+     */
+    public RandomObject(int StartingHealth,int points) {
+        super(StartingHealth);
+        setScoreToAdd(points);
+    }
+
+    /**
+     *
+     */
     @Override
     public void init() {
     }
 
+    /**
+     *
+     */
     @Override
     public void doMove() {
         if (LevelOverOverlay.isFinished()) {
@@ -53,11 +73,19 @@ public class RandomObject extends IDestroyable {
         }
     }
 
+    /**
+     *
+     * @param gd
+     */
     @Override
     public void Update(Graphics2D gd) {
         DrawLastLoadedImage(gd);
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void onCollison(IDrawable id) {
 

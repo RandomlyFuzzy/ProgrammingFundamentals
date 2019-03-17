@@ -18,16 +18,28 @@ import java.awt.Graphics2D;
  */
 public class PickUp extends IDestroyable {
 
+    /**
+     *
+     * @param Score
+     */
     public PickUp( int Score) {
         super(1);
         setScoreToAdd(Score);
     }
 
+    /**
+     *
+     */
     @Override
     public void init() {
+        
         GetSprite("/images/pickup.png");
+        setScale(new Vector(0.65f,0.65f));
     }
 
+    /**
+     *
+     */
     @Override
     public void doMove() {
         if(this.getHealth()!= this.getMaxHealth()){
@@ -47,11 +59,19 @@ public class PickUp extends IDestroyable {
         }
     }
 
+    /**
+     *
+     * @param gd
+     */
     @Override
     public void Update(Graphics2D gd) {
         DrawLastLoadedImage(gd);
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void onCollison(IDrawable id) {
         if (!(id instanceof Player)) {

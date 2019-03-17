@@ -21,15 +21,25 @@ public class Enemy extends IDestroyable {
     private double current = 0;
     private double Delay = 0.8;
 
+    /**
+     *
+     * @param i
+     */
     public Enemy(int i) {
         super(i);
     }
 
+    /**
+     *
+     */
     @Override
     public void init() {
         GetSprite("/images/enemy.png");
     }
 
+    /**
+     *
+     */
     @Override
     public void doMove() {
         if (LevelOverOverlay.isFinished()) {
@@ -38,10 +48,10 @@ public class Enemy extends IDestroyable {
         }
 
         if (getHealth() <= 0) {
-            IDestroyableManager.remove(this);
+            ParticalGenerator.add(this);
             Player.addScore(getScore());
             Level().RemoveObject(this);
-            ParticalGenerator.add(this);
+            IDestroyableManager.remove(this);
             return;
         }
         if (!((-Transform.getOffsetTranslation().getX() - (Game.getScaledWidth()) < getPosition().getX()
@@ -51,26 +61,37 @@ public class Enemy extends IDestroyable {
             IDestroyableManager.remove(this);
             Level().RemoveObject(this);
             return;
-        } else if (((-Transform.getOffsetTranslation().getX()) < getPosition().getX()
-                && (-Transform.getOffsetTranslation().getX() + (Game.getScaledWidth())) > getPosition().getX()
-                && (-Transform.getOffsetTranslation().getY()) < getPosition().getY()
-                && (-Transform.getOffsetTranslation().getY() + (Game.getScaledHeight())) > getPosition().getY())) {
+        } else {
             Vector relpos = new Vector(getPosition()).mult(1).add(new Vector(Transform.getOffsetTranslation()).mult(1).add(new Vector(Game.getScaledWidth() / 2, Game.getScaledHeight() / 2).mult(-1)));
 //
             setRotation(Math.atan2(relpos.getY(), relpos.getX()) - Math.PI / 2);
+            addPosition(new Vector(GetUp()).mult(35).mult(Game.getDelta()));
+        }
+        if (((-Transform.getOffsetTranslation().getX()) < getPosition().getX()
+                && (-Transform.getOffsetTranslation().getX() + (Game.getScaledWidth())) > getPosition().getX()
+                && (-Transform.getOffsetTranslation().getY()) < getPosition().getY()
+                && (-Transform.getOffsetTranslation().getY() + (Game.getScaledHeight())) > getPosition().getY())) {
+
             if ((current + Delay) <= Level().getTime()) {
                 Level().AddObject(new Bullet(new Vector(getPosition()), getRotation(), 14));
                 current = Level().getTime();
             }
         }
-        addPosition(new Vector(GetUp()).mult(35).mult(Game.getDelta()));
     }
 
+    /**
+     *
+     * @param gd
+     */
     @Override
     public void Update(Graphics2D gd) {
         DrawLastLoadedImage(gd);
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void onCollison(IDrawable id) {
         System.out.println("com.Progfund.Object.inGame.Enemy.onCollison() " + id.getClass().getSimpleName());

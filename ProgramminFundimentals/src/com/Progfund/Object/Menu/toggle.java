@@ -26,12 +26,20 @@ public class toggle extends IDrawable {
 
     private HUDdelegate buttonDelegate;
 
+    /**
+     *
+     */
     public toggle() {
         super();
         UseTransforms(false);
 
     }
 
+    /**
+     *
+     * @param relpos
+     * @param Logic
+     */
     public toggle(Vector relpos, HUDdelegate Logic) {
         super();
         this.buttonDelegate = Logic;
@@ -39,17 +47,27 @@ public class toggle extends IDrawable {
         GetSprite("/images/toggle" + (isTicked ? "On" : "Off") + ".png");
     }
 
+    /**
+     *
+     */
     @Override
     public void init() {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void doMove() {
         setPosition(new Vector(((Game.getScaledWidth())) * relpos.getX(), ((Game.getScaledHeight())) * relpos.getY()).add(new Vector(Transform.getOffsetTranslation()).mult(-1)));
         setScale(Game.ButtonDims());
     }
 
+    /**
+     *
+     * @param g
+     */
     @Override
     public void Update(Graphics2D g) {
         DrawLastLoadedImage(g);
@@ -61,6 +79,9 @@ public class toggle extends IDrawable {
         }
     }
 
+    /**
+     *
+     */
     public void DoAction() {
         if (buttonDelegate != null) {
             buttonDelegate.OnClick(this);
@@ -71,6 +92,10 @@ public class toggle extends IDrawable {
         }
     }
 
+    /**
+     *
+     * @param im
+     */
     @Override
     public void onCollison(IDrawable im) {
         if (im instanceof toggle) {
@@ -78,10 +103,18 @@ public class toggle extends IDrawable {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean IsTicked() {
         return isTicked;
     }
 
+    /**
+     *
+     * @param isTicked
+     */
     public void setIsTicked(boolean isTicked) {
         this.isTicked = isTicked;
     }

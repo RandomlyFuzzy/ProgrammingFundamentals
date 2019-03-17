@@ -24,6 +24,14 @@ public class HashUtils {
     * checked to see if an object is similar upon spawn 
     * @param id 
     */
+
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+
     public static int hash(Vector a,Vector b){
         int a0 = (int)(a.getX()*10000f);
         int a1 = (int)(a.getY()*10000f);

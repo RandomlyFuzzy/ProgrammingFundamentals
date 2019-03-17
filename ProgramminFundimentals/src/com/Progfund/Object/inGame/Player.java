@@ -30,6 +30,11 @@ public class Player extends IDestroyable {
     private static int Score = 0;
     private static int scoreNeeded = 0;
 
+    /**
+     *
+     * @param health
+     * @param scoreneeded
+     */
     public Player(int health, int scoreneeded) {
         super(health);
         Accerlation = new Vector(0, 0);
@@ -38,24 +43,43 @@ public class Player extends IDestroyable {
         scoreNeeded = scoreneeded;
     }
 
+    /**
+     *
+     */
     @Override
     public void init() {
         GetSprite("/images/player.png");
         SetHashParams();
     }
 
+    /**
+     *
+     * @param val
+     */
     public void SetVerticalDir(int val) {
         vertical = val;
     }
 
+    /**
+     *
+     * @param val
+     */
     public void SetHorizontalDir(int val) {
         horizontal = val;
     }
 
+    /**
+     *
+     * @return
+     */
     public static int getScoreNeeded() {
         return scoreNeeded;
     }
 
+    /**
+     *
+     * @param scoreNeeded
+     */
     public static void setScoreNeeded(int scoreNeeded) {
         Player.scoreNeeded = scoreNeeded;
     }
@@ -68,19 +92,29 @@ public class Player extends IDestroyable {
         return Player.Score;
     }
 
+    /**
+     *
+     * @param Score
+     */
     public static void setScore(int Score) {
         Player.Score = Score;
     }
 
+    /**
+     *
+     * @param Score
+     */
     public static void addScore(int Score) {
         Player.Score += Score;
     }
 
+    /**
+     *
+     */
     @Override
     public void doMove() {
-
+//        setHealth(getMaxHealth());
         if (!LevelOverOverlay.isFinished()) {
-
             Vector relpos = new Vector(Level().getMousePos()).add(new Vector(Game.getWindowWidth() / -2, Game.getWindowHeight() / -2));
             setRotation(Math.atan2(relpos.getX(), -relpos.getY()));
             addPosition(new Vector(new Vector(GetUp()).mult(vertical * speed.getY()).add(new Vector(GetRight()).mult(-horizontal * speed.getX()))));
@@ -98,11 +132,21 @@ public class Player extends IDestroyable {
 
     }
 
+    /**
+     *
+     * @param gd
+     */
     @Override
     public void Update(Graphics2D gd) {
         DrawLastLoadedImage(gd);
+        gd.setColor(Color.red);
+        gd.drawString(""+Level().GetObjectCount(), 0,-40);
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void onCollison(IDrawable id) {
     }

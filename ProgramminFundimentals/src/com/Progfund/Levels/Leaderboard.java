@@ -62,12 +62,14 @@ public class Leaderboard extends ILevel {
     public void init() {
         GetSprite("/Images/backgrounds/background1.png");
 
-        for (int i = 0; i < 2; i++) {
-            AddObject(new Button(new Vector(((0.35f * (i % 5)) + 0.325f), ((0.1f * (i / 5)) + 0.1f)), ("Level" + ((i % 5) + 1)), new HUDdelegate() {
+        for (int i = 0; i < 20; i++) {
+            Button b = new Button(new Vector(((0.09f * (i % 10)) + 0.095f), ((0.075f * (i / 10)) + 0.05f)), "Level" + ((i + 1)), new HUDdelegate() {
                 public void OnClick(Button b) {
                     Leaderboard.setCurrentind(b.getMessage());
                 }
-            }));
+            });
+            AddObject(b);
+            b.setScale(new Vector(0.4f, 0.5f));
         }
         AddObject(new Button(new Vector(0.86f, 0.9f), "Back", new HUDdelegate() {
             @Override
@@ -85,12 +87,13 @@ public class Leaderboard extends ILevel {
     @Override
     public void Update(ActionEvent ae) {
         if (previousind != Currentind) {
+            System.out.println("com.Progfund.Levels.Leaderboard.Update() loading " + Currentind);
             times = new ArrayList<String>();
             times.addAll(
                     FileUtils.GetFileSplit("Resources/savedata/" + Currentind + ".txt", "\n", true)
             );
+            System.out.println("com.Progfund.Levels.Leaderboard.Update() with " + times.size()+" entrys");
 
-            System.out.println("com.FuturePixels.levels.OtherLevels.LeaderBoard.Update() " + times.size());
             times.sort(new Comparator<String>() {
                 @Override
                 public int compare(String o1, String o2) {
@@ -106,9 +109,9 @@ public class Leaderboard extends ILevel {
                     return Double.parseDouble(val2) > Double.parseDouble(val1) ? 1 : -1;
                 }
             });
-            if (times.size() > 10) {
+            if (times.size() > 5) {
                 String set = "";
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 5; i++) {
                     set += times.get(i) + "\n";
                 }
                 FileUtils.SetFileContence("Resources/savedata/" + Currentind + ".txt", set);
@@ -128,7 +131,7 @@ public class Leaderboard extends ILevel {
         Font f = g.getFont();
         Font f2 = f.deriveFont(1, Game.WorldScale().getY() * 13);
         g.setFont(f2);
-        if (times.size() > 1) {
+        if (times.size() != 0&&!times.get(0).equals(new String())) {
             g.setColor(new Color(55, 55, 55, 150));
 
             g.setFont(f.deriveFont(1, f.getSize() + (Game.WorldScale().getY() * ((int) Math.pow(15 - 0, 2) / 10))));
@@ -140,13 +143,13 @@ public class Leaderboard extends ILevel {
                     (int) ((Game.getWindowWidth() / 2) - w / 2),
                     (int) ((0.205f) * Game.getWindowHeight()),
                     (int) (w),
-                    (int) (0.620f * Game.getWindowHeight()));
+                    (int) (0.120f * Game.getWindowHeight()*(times.size() >= 5 ? 5 : times.size())));
             w = (int) (g.getFontMetrics().stringWidth(Currentind) * 1.05f);
             g.drawString(Currentind, (Game.getWindowWidth() / 2 - (w / 2)), y);
 
             g.setColor(Color.WHITE);
             int inc = 0;
-            for (int i = 0; i < (times.size() >= 10 ? 10 : times.size()); i++) {
+            for (int i = 0; i < (times.size() >= 5 ? 5 : times.size()); i++) {
                 g.setFont(f.deriveFont(1, f.getSize() + (Game.WorldScale().getY() * ((int) Math.pow(15 - i, 2) / 10))));
                 s = times.get(i);
                 split = s.split(":");
@@ -154,7 +157,7 @@ public class Leaderboard extends ILevel {
                 w = g.getFontMetrics().stringWidth(str);
                 g.drawString(str,
                         Game.getWindowWidth() / 2 - w / 2,
-                        (((i % 20) * 0.06f) + 0.26f) * Game.getWindowHeight());
+                        (((i % 20) * 0.12f) + 0.28f) * Game.getWindowHeight());
                 y += 0.03f;
             }
         }

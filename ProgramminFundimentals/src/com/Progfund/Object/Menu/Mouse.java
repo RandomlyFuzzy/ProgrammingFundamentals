@@ -21,10 +21,16 @@ public class Mouse extends IDrawable {
 
     private boolean clicked = false;
 
+    /**
+     *
+     */
     public Mouse() {
         super();
     }
 
+    /**
+     *
+     */
     @Override
     public void init() {
         setPosition(new Vector(Level().getMousePos()).mult(new Vector(1f / Game.WorldScale().getX(), 1f / Game.WorldScale().getX())).add(new Vector(Transform.getOffsetTranslation()).mult(-1)));
@@ -32,6 +38,9 @@ public class Mouse extends IDrawable {
     }
     float ind = 0;
 
+    /**
+     *
+     */
     @Override
     public void doMove() {
 //        Rad += Game.g.getDelta() * 100;
@@ -48,12 +57,20 @@ public class Mouse extends IDrawable {
         clicked = clicked != !Level().isClicking() && clicked;
     }
 
+    /**
+     *
+     * @param g
+     */
     @Override
     public void Update(Graphics2D g) {
 //        GetSprite("/Images/cursor_" + (int) ind + ".png");
         DrawLastLoadedImage(g);
     }
 
+    /**
+     *
+     * @param im
+     */
     @Override
     public void onCollison(IDrawable im) {
         if (im == null) {

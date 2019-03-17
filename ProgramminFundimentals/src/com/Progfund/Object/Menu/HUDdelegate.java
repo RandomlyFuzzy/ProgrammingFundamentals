@@ -11,7 +11,16 @@ package com.Progfund.Object.Menu;
  */
 public abstract class HUDdelegate {
 
+    /**
+     *
+     * @param b
+     */
     public void OnClick (Button b){}
+
+    /**
+     *
+     * @param b
+     */
     public void OnClick (toggle b){}
 
 }

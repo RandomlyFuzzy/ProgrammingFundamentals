@@ -44,15 +44,23 @@ public class LevelGenerator extends IDrawable {
         new Vector(0.5f, 0.75f),
         new Vector(0.25f, 0.5f),
         //for the pickups
-        new Vector( 0.5f, 0.5f) 
+        new Vector(0.5f, 0.5f)
     };
 
+    /**
+     *
+     * @param seed
+     * @param difficulty
+     */
     public LevelGenerator(int seed, int difficulty) {
         r = new Random(seed);
         spawns = new Random(seed);
-        this.difficulty = difficulty;
+        this.difficulty = difficulty * 2 + 1;
     }
 
+    /**
+     *
+     */
     @Override
     public void init() {
         setIsCollidable(false);
@@ -65,10 +73,17 @@ public class LevelGenerator extends IDrawable {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void doMove() {
     }
 
+    /**
+     *
+     * @param gd
+     */
     @Override
     public void Update(Graphics2D gd) {
 
@@ -92,15 +107,13 @@ public class LevelGenerator extends IDrawable {
 
                 if (inside) {
                     if (Map.get(i).get(j)) {
-                        GetSprite(getRightImageFromPos("roadsprites/road_", i, j));
+                        GetSprite("/images/roadsprites/road_" + getRightImageFromPos(i, j));
                     } else {
-                        GetSprite(getRightImageFromPos("grassSprites/", i, j));
+                        GetSprite("/images/grassSprites/" + getRightImageFromPos(i, j));
                     }
                     gd.drawImage(getLastImage(), (int) ((i - (Map.size() / 2)) * Size.getX()), (int) ((j - (Map.size() / 2)) * Size.getY()), (int) Size.getX(), (int) Size.getY(), null);
                 } else if (!LevelOverOverlay.isFinished()) {
 
-                    
-                    
                     int pos = spawns.nextInt(13);
                     if (pos <= 3) //places enemys
                     {
@@ -115,19 +128,38 @@ public class LevelGenerator extends IDrawable {
                     {
                         int sorrounings = CheckSorrounding(i, j);
 
-                        if (Map.get(i).get(j)) //road 
+                        if (Map.get(i).get(j)) //is a road 
                         {
-                            boolean Rotate = (pos % 2 == 0
-                                    && ((sorrounings & 8) == 8
-                                    || (sorrounings & 4) == 4
-                                    || (sorrounings & 2) != 2
-                                    || (sorrounings & 1) != 1));
+                            //
+                            boolean Rotate = (pos % 2 == 0);
 
-                            Vector Place = new Vector(x, y).add(new Vector(places[(pos) % 4 + 8]).mult(Size));
-                            if (IDestroyableManager.willBeUnique(Place, new Vector(100)) && HashUtils.hash(Place, new Vector(50)) % difficulty == 0) {
-                                if (sorrounings != 0) {
+                            Vector V1 = Vector.Zero();
+                            Vector V2 = Vector.Zero();
+
+                            if (sorrounings != 0 && sorrounings != 4) {
+                                //Car spawn or road
+                                V1 = new Vector(x, y).add(new Vector(places[(pos) % 4 + 8]).mult(Size));
+                                V2 = new Vector(50);
+                            } else if (sorrounings != 0) {
+                                if (pos % 4 == 2) {
+                                    //car spawn on driveway
+                                    V1 = new Vector(x, y).add(new Vector(places[(pos) % 4 + 8]).mult(Size).add(new Vector(-0f, 0.3f).mult(Size)));
+                                    V2 = new Vector(25);
+                                } else if (pos % 4 == 3) {
+                                    //mailbox on garden
+                                    V1 = new Vector(x, y).add(new Vector(places[(pos) % 4 + 8]).mult(Size)).add(new Vector(-0.1f, 0.3f).mult(Size));
+                                    V2 = new Vector(25);
+                                } else {
+                                    //people on house
+                                    V1 = new Vector(x, y).add(new Vector(places[(pos) % 4 + 8]).mult(Size)).add(new Vector(0.3f, -0.30f).mult(Size));
+                                    V2 = new Vector(25);
+                                }
+                            }
+
+                            if (IDestroyableManager.willBeUnique(V1, V2) && HashUtils.hash(V1, V2) % difficulty == 0) {
+                                if (sorrounings != 0 && sorrounings != 4) {
                                     RandomObject e = new RandomObject(50);
-                                    e.setPosition(Place);
+                                    e.setPosition(V1);
                                     e.setScale(new Vector(0.6f, 0.6f));
                                     e.SetHashParams();
                                     if (Rotate) {
@@ -135,18 +167,35 @@ public class LevelGenerator extends IDrawable {
                                     }
                                     e.GetSprite("/images/car" + (spawns.nextInt(3) + 1) + ".png");
                                     Level().AddObject(e);
-                                } else {
-                                    person p = new person(25, 100);
-                                    p.setPosition(Place);
-                                    p.SetHashParams();
-                                    p.GetSprite("/images/person.png");
-                                    Level().AddObject(p);
+                                } else if (sorrounings != 0 && HashUtils.hash(V1, V2) % difficulty == 0) {
+//                                    Place = new Vector(x, y).add(new Vector(places[(pos) % 4 + 4]).mult(Size));
+                                    if (pos % 4 == 2) {
+                                        RandomObject p = new RandomObject(25, 100);
+                                        p.setPosition(V1);
+                                        p.setScale(new Vector(0.6f, 0.6f));
+                                        p.setRotation(Math.PI / 2);
+                                        p.SetHashParams();
+                                        p.GetSprite("/images/car" + (spawns.nextInt(3) + 1) + ".png");
+                                        Level().AddObject(p);
+                                    } else if (pos % 4 == 3) {
+                                        RandomObject p = new RandomObject(25, 20);
+                                        p.setPosition(V1);
+//                                        p.setScale(new Vector(0.6f, 0.6f));
+                                        p.SetHashParams();
+                                        p.GetSprite("/images/mailbox.png");
+                                        Level().AddObject(p);
+                                    } else {
+                                        person p = new person(25, 100);
+                                        p.setPosition(V1);
+                                        p.SetHashParams();
+                                        p.GetSprite("/images/person.png");
+                                        Level().AddObject(p);
+                                    }
                                 }
                             }
 
-                        } else//grass
+                        } else// is grass
                         {
-
                             Vector Place = new Vector(x, y).add(new Vector(places[(pos) % 4 + 4]).mult(Size));
                             if (IDestroyableManager.willBeUnique(Place, new Vector(100))) {
                                 if (sorrounings != 15 && HashUtils.hash(Place, new Vector(50)) % difficulty == 0) {
@@ -159,7 +208,7 @@ public class LevelGenerator extends IDrawable {
 //                                    }
                                     e.GetSprite("/images/bin.png");
                                     Level().AddObject(e);
-                                } else if (sorrounings == 15) {
+                                } else if (sorrounings == 15 && HashUtils.hash(Place, new Vector(25)) % difficulty == 0) {
                                     person p = new person(25, 100);
                                     p.setPosition(Place);
                                     p.SetHashParams();
@@ -169,16 +218,15 @@ public class LevelGenerator extends IDrawable {
                             }
                         }
                     } else {
-                        Vector Place = new Vector(x, y).add(new Vector(places[(pos) ]).mult(Size));
-                        if (IDestroyableManager.willBeUnique(Place, new Vector(100))) {
-                            if (HashUtils.hash(Place, new Vector(300)) % difficulty == 0) {
-                                PickUp e = new PickUp(300);
-                                e.setPosition(Place);
-                                e.setScale(new Vector(2f, 2f));
-                                e.SetHashParams();
-                                e.GetSprite("/images/bin.png");
-                                Level().AddObject(e);
-                            }
+                        Vector Place = new Vector(x, y).add(new Vector(places[(pos)]).mult(Size));
+                        if (IDestroyableManager.willBeUnique(Place, new Vector(100))
+                                && HashUtils.hash(Place, new Vector(300)) % difficulty == 0) {
+                            PickUp e = new PickUp(300);
+                            e.setPosition(Place);
+                            e.setScale(new Vector(2f, 2f));
+                            e.SetHashParams();
+                            e.GetSprite("/images/bin.png");
+                            Level().AddObject(e);
                         }
                     }
                 }
@@ -186,6 +234,12 @@ public class LevelGenerator extends IDrawable {
         }
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public int CheckSorrounding(int x, int y) {
         boolean up = false, left = false, down = false, right = false;
         up = y == 0 ? false : Map.get(x).get(y - 1);
@@ -197,15 +251,26 @@ public class LevelGenerator extends IDrawable {
         return ret;
     }
 
-    public String getRightImageFromPos(String prefix, int x, int y) {
+    /**
+     *
+     * @param prefix
+     * @param x
+     * @param y
+     * @return
+     */
+    public String getRightImageFromPos(int x, int y) {
         boolean up = false, left = false, down = false, right = false;
         up = y == 0 ? false : Map.get(x).get(y - 1);
         left = x == 0 ? false : Map.get(x - 1).get(y);
         down = y == Map.get(x > Map.size() ? Map.size() - 1 : x).size() - 1 ? false : Map.get(x).get(y + 1);
         right = x == Map.size() - 1 ? false : Map.get(x + 1).get(y);
-        return "/images/" + prefix + (up ? "t" : "f") + (down ? "t" : "f") + (left ? "t" : "f") + (right ? "t" : "f") + ".png";
+        return (up ? "t" : "f") + (down ? "t" : "f") + (left ? "t" : "f") + (right ? "t" : "f") + ".png";
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void onCollison(IDrawable id) {
 

@@ -21,20 +21,34 @@ public class ParticalGenerator extends IDrawable {
 
     private static ArrayList<particalParams> particals = new ArrayList<particalParams>();
 
+    /**
+     *
+     * @param id
+     */
     public static void add(IDestroyable id) {
         particals.add(new particalParams("" + id.getScore(), id.getPosition(), 255));
         System.out.println("com.Progfund.Object.inGame.ParticalGenerator.add()");
     }
 
+    /**
+     *
+     */
     @Override
     public void init() {
         System.out.println("com.Progfund.Object.inGame.ParticalGenerator.init()");
     }
 
+    /**
+     *
+     */
     @Override
     public void doMove() {
     }
 
+    /**
+     *
+     * @param gd
+     */
     @Override
     public void Update(Graphics2D gd) {
         if (particals.size() == 0) {
@@ -66,6 +80,10 @@ public class ParticalGenerator extends IDrawable {
         }
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void onCollison(IDrawable id) {
     }
@@ -117,6 +135,9 @@ public class ParticalGenerator extends IDrawable {
         }
     }
 
+    /**
+     *
+     */
     public void dispose() {
         super.dispose();
         particals = new ArrayList<particalParams>();

@@ -29,60 +29,117 @@ public abstract class IDestroyable extends IDrawable {
         IDestroyableManager.Add(this);
     }
 
+    /**
+     *
+     * @param MaxHealth
+     */
     public IDestroyable(int MaxHealth) {
         this();
         setMaxHealth(MaxHealth);
     }
 
+    /**
+     *
+     * @return
+     */
     public Vector[] getHashVecs() {
         return refs;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRefHash() {
         return refHash;
     }
 
+    /**
+     *
+     * @param val
+     */
     public void setHealth(int val) {
         Health = val;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getHealth() {
         return Health;
     }
 
+    /**
+     *
+     * @param damage
+     */
     public void Damage(int damage) {
         this.Health -= damage;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getMaxHealth() {
         return MaxHealth;
     }
 
+    /**
+     *
+     * @param MaxHealth
+     */
     public void setMaxHealth(int MaxHealth) {
         Health = MaxHealth;
         this.MaxHealth = MaxHealth;
     }
 
+    /**
+     *
+     * @param scoreToAdd
+     */
     public void setScoreToAdd(int scoreToAdd) {
         this.scoreToAdd = scoreToAdd;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getScore() {
         return scoreToAdd;
     }
 
+    /**
+     *
+     */
     public void SetHashParams() {
         refs[0] = getPosition();
         refs[1] = new Vector(getMaxHealth());
         refHash = HashUtils.hash(getHashVecs()[0], getHashVecs()[1]);
     }
 
+    /**
+     *
+     */
     public abstract void init();
 
+    /**
+     *
+     */
     public abstract void doMove();
 
+    /**
+     *
+     * @param gd
+     */
     public abstract void Update(Graphics2D gd);
 
+    /**
+     *
+     * @param id
+     */
     public abstract void onCollison(IDrawable id);
 
 }

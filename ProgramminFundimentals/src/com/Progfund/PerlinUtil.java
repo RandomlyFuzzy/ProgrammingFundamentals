@@ -8,8 +8,19 @@ package com.Progfund;
 // JAVA REFERENCE IMPLEMENTATION OF IMPROVED NOISE - COPYRIGHT 2002 KEN PERLIN.
 import java.util.Random;
 
+/**
+ *
+ * @author RandomlyFuzzy
+ */
 public final class PerlinUtil {
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
     public static double noise(double x, double y, double z) {
         int X = (int) Math.floor(x) & (p.length / 2) - 1, // FIND UNIT CUBE THAT
                 Y = (int) Math.floor(y) & (p.length / 2) - 1, // CONTAINS POINT.

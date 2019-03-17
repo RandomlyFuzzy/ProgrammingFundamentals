@@ -10,6 +10,10 @@ import com.Liamengine.Engine.Components.Vector;
 import com.Liamengine.Engine.Entry.Game;
 import com.Liamengine.Engine.Utils.FileUtils;
 import com.Liamengine.Engine.Utils.LevelLoader;
+import com.Liamengine.Engine.Utils.UtilManager;
+import com.Progfund.Levels.Level;
+import com.Progfund.Levels.LevelSelect;
+import com.Progfund.Levels.timedLevel;
 import com.Progfund.Object.inGame.Player;
 import java.awt.Color;
 import java.awt.Font;
@@ -37,26 +41,50 @@ public class LevelOverOverlay extends IDrawable {
     private static boolean saved = false;
     private static Button saveButton;
 
+    /**
+     *
+     * @return
+     */
     public static Button getSaveButton() {
         return saveButton;
     }
 
+    /**
+     *
+     * @return
+     */
     public static boolean isFinished() {
         return finished;
     }
 
+    /**
+     *
+     * @param finished
+     */
     public static void setFinished(boolean finished) {
+        UtilManager.FindUseClass(5);
         LevelOverOverlay.finished = finished;
     }
 
+    /**
+     *
+     * @return
+     */
     public static boolean hassaved() {
         return saved;
     }
 
+    /**
+     *
+     * @param saved
+     */
     public static void setsaved(boolean saved) {
         LevelOverOverlay.saved = saved;
     }
 
+    /**
+     *
+     */
     @Override
     public void init() {
         setFinished(true);
@@ -64,7 +92,7 @@ public class LevelOverOverlay extends IDrawable {
         UseTransforms(false);
         Level().AddObject(new Button(new Vector(0.25f, 0.8f), "replay", new HUDdelegate() {
             public void OnClick(Button b) {
-                LevelLoader.LoadLevel(b.Level());
+                LevelSelect.LoadLevelFromID(Level.GetLevel());
                 System.out.println(".OnClick()");
             }
         }));
@@ -89,11 +117,13 @@ public class LevelOverOverlay extends IDrawable {
                                 return;
                             }
 
-                            String file = LevelOverOverlay.getSaveButton().Level().getClass().getSimpleName();
+                            String file = "Level"+Level.GetLevel();
                             System.out.println(text.getText().trim());
                             LevelOverOverlay.setsaved(true);
                             LevelOverOverlay.getSaveButton().setMessage("Saved as " + text.getText().trim());
-                            FileUtils.AppendToFile("resources/saveData/" + file + ".txt", text.getText().trim().replace(":", "_") + ":" + Player.getPlayerScore() + "\n");
+                            FileUtils.AppendToFile("resources/saveData/" + file + ".txt", 
+                                    text.getText().trim().replaceAll(":*", "_")+ 
+                                    ((Level()instanceof timedLevel)?"(t)":"") + ":" + Player.getPlayerScore() + "\n");
                         }
                     });
 
@@ -116,10 +146,17 @@ public class LevelOverOverlay extends IDrawable {
         Level().AddObject(new Mouse()).setScale(new Vector(4, 4));
     }
 
+    /**
+     *
+     */
     @Override
     public void doMove() {
     }
 
+    /**
+     *
+     * @param gd
+     */
     @Override
     public void Update(Graphics2D gd) {
         Color c = gd.getColor();
@@ -147,10 +184,17 @@ public class LevelOverOverlay extends IDrawable {
         gd.setColor(c);
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void onCollison(IDrawable id) {
     }
 
+    /**
+     *
+     */
     public void dispose() {
         super.dispose();
         saveButton = null;

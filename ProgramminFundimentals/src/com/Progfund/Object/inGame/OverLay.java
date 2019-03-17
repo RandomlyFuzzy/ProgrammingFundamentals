@@ -23,17 +23,27 @@ public class OverLay extends IDrawable {
     private int w = 70;
     private int h = 25;
 
+    /**
+     *
+     */
     @Override
     public void init() {
         setIsCollidable(false);
 
     }
 
+    /**
+     *
+     */
     @Override
     public void doMove() {
 
     }
 
+    /**
+     *
+     * @param gd
+     */
     @Override
     public void Update(Graphics2D gd) {
         for (IDestroyable obj : IDestroyableManager.getInstance()) {
@@ -49,10 +59,17 @@ public class OverLay extends IDrawable {
 //        gd.drawLine((int)(-Transform.getOffsetTranslation().getX() - (Game.getScaledWidth())),(int)(-Transform.getOffsetTranslation().getY()- (Game.getScaledHeight())),(int)(-Transform.getOffsetTranslation().getX() + (Game.getScaledWidth()*2)),(int)(-Transform.getOffsetTranslation().getY() + (Game.getScaledHeight()*2)));
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void onCollison(IDrawable id) {
     }
 
+    /**
+     *
+     */
     public void dispose() {
         super.dispose();
 

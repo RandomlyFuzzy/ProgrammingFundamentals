@@ -26,18 +26,32 @@ public class Button extends IDrawable {
     private Vector relpos = Vector.One();
     private HUDdelegate buttonDelegate;
 
+    /**
+     *
+     */
     public Button() {
         super();
         UseTransforms(false);
 
     }
 
+    /**
+     *
+     * @param Message
+     * @param Logic
+     */
     public Button(String Message, HUDdelegate Logic) {
         super();
         this.Message = Message;
         buttonDelegate = Logic;
     }
 
+    /**
+     *
+     * @param relpos
+     * @param Message
+     * @param Logic
+     */
     public Button(Vector relpos, String Message, HUDdelegate Logic) {
         super();
         this.Message = Message;
@@ -46,23 +60,32 @@ public class Button extends IDrawable {
         GetSprite("/Images/Button.png");
     }
 
+    /**
+     *
+     */
     @Override
     public void init() {
-
+        setScale(new Vector(Game.ButtonDims()).mult((1 / Game.getWorldrelDims().getX())));
     }
 
+    /**
+     *
+     */
     @Override
     public void doMove() {
         setPosition(new Vector(((Game.getScaledWidth())) * relpos.getX(), ((Game.getScaledHeight())) * relpos.getY()).add(new Vector(Transform.getOffsetTranslation()).mult(-1)));
-        setScale(new Vector(Game.ButtonDims()).mult((1/Game.getWorldrelDims().getX())));
     }
 
+    /**
+     *
+     * @param g
+     */
     @Override
     public void Update(Graphics2D g) {
         DrawLastLoadedImage(g);
-        g.setColor(new Color(255, 255, 255)); 
+        g.setColor(new Color(255, 255, 255));
         Font f = g.getFont();
-        g.setFont(f.deriveFont(f.getSize()*(1/Game.getWorldrelDims().getX())*1.3f));
+        g.setFont(f.deriveFont(f.getSize() * (1 / Game.getWorldrelDims().getX()) * 1.3f));
         FontMetrics metrics = g.getFontMetrics();
         g.drawString(Message, -metrics.stringWidth(Message) / 2, g.getFont().getSize() / 2);
         if (isColliding()) {
@@ -74,6 +97,9 @@ public class Button extends IDrawable {
         g.setFont(f);
     }
 
+    /**
+     *
+     */
     public void DoAction() {
         if (buttonDelegate != null) {
             buttonDelegate.OnClick(this);
@@ -82,6 +108,10 @@ public class Button extends IDrawable {
         }
     }
 
+    /**
+     *
+     * @param im
+     */
     @Override
     public void onCollison(IDrawable im) {
         if (!(im instanceof Mouse)) {
@@ -89,10 +119,18 @@ public class Button extends IDrawable {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public String getMessage() {
         return Message;
     }
 
+    /**
+     *
+     * @param Message
+     */
     public void setMessage(String Message) {
         this.Message = Message;
     }

@@ -20,6 +20,11 @@ public class IDestroyableManager {
     /*
     * resets the arraylist of objects 
      */
+
+    /**
+     *
+     */
+
     public static void Reset() {
         destroyableObjs = new ArrayList<IDestroyable>();
     }
@@ -27,6 +32,12 @@ public class IDestroyableManager {
     /*
     * @return a instance of all currently created IDestroyables in the level
      */
+
+    /**
+     *
+     * @return
+     */
+
     public static ArrayList<IDestroyable> getInstance() {
         return new ArrayList<IDestroyable>(destroyableObjs);
     }
@@ -34,6 +45,12 @@ public class IDestroyableManager {
     /*
     * add an IDestroyable to an arraylist 
      */
+
+    /**
+     *
+     * @param id
+     */
+
     public static void Add(IDestroyable id) {
         destroyableObjs.add(id);
     }
@@ -41,6 +58,12 @@ public class IDestroyableManager {
     /*
     * removes and object from an arraylist
     */
+
+    /**
+     *
+     * @param id
+     */
+
     public static void remove(IDestroyable id) {
         destroyableObjs.remove(id);
     }
@@ -49,6 +72,14 @@ public class IDestroyableManager {
     * simple check of hash's to everything spawned thats an instanceof IDestroyable
     * @return true if not found false if found 
      */
+
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+
     public static boolean willBeUnique(Vector a, Vector b) {
         for (IDestroyable id : destroyableObjs) {
             if (id.getRefHash() == HashUtils.hash(a, b)) {
@@ -62,6 +93,13 @@ public class IDestroyableManager {
     * simple check of hash's to everything spawned thats an instanceof IDestroyable
     * @return true if not found false if found 
      */
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+
     public static boolean IsUnique(IDestroyable id) {
         for (IDestroyable id2 : destroyableObjs) {
             if (id2.getRefHash() == id.getRefHash()) {

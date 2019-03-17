@@ -35,11 +35,17 @@ public class MainMenu extends ILevel {
 
     BufferedImage bg;
 
+    /**
+     *
+     */
     public MainMenu() {
         setStopAudioOnStart(false);
         setSimpleCollison(true);
     }
 
+    /**
+     *
+     */
     @Override
     public void init() {
         imageUtils.T.setImage("background", null);
@@ -47,15 +53,20 @@ public class MainMenu extends ILevel {
         setBackground(Color.BLACK);
         AddObject(new Button(new Vector(0.125f, 0.27f), "Play Level", new HUDdelegate() {
             public void OnClick(Button b) {
-                LevelLoader.LoadLevel(new Level1());
+                LevelLoader.LoadLevel(new LevelSelect());//new com.Progfund.Levels.Level(1000,3,20,300));
             }
         }));
-        AddObject(new Button(new Vector(0.125f, 0.4f), "LeaderBoard", new HUDdelegate() {
+        AddObject(new Button(new Vector(0.125f, 0.40f), "Time Trials", new HUDdelegate() {
+            public void OnClick(Button b) {
+                LevelLoader.LoadLevel(new LevelSelecttimed());//new com.Progfund.Levels.Level(1000,3,20,300));
+            }
+        }));
+        AddObject(new Button(new Vector(0.125f, 0.53f), "LeaderBoard", new HUDdelegate() {
             public void OnClick(Button b) {
                 LevelLoader.LoadLevel(new Leaderboard());
             }
         }));
-        AddObject(new Button(new Vector(0.125f, 0.53f), "Exit", new HUDdelegate() {
+        AddObject(new Button(new Vector(0.125f, 0.66f), "Exit", new HUDdelegate() {
             public void OnClick(Button b) {
                 System.exit(0);
             }
@@ -78,10 +89,18 @@ public class MainMenu extends ILevel {
 
     }
 
+    /**
+     *
+     * @param ae
+     */
     @Override
     public void Update(ActionEvent ae) {
     }
 
+    /**
+     *
+     * @param gd
+     */
     @Override
     public void Draw(Graphics2D gd) {
         if (imageUtils.T.GetImage("background") == bg) {
@@ -93,10 +112,18 @@ public class MainMenu extends ILevel {
         }
     }
 
+    /**
+     *
+     * @param ke
+     */
     @Override
     public void keyPress(KeyEvent ke) {
     }
 
+    /**
+     *
+     * @param ke
+     */
     @Override
     public void keyRelease(KeyEvent ke) {
     }
