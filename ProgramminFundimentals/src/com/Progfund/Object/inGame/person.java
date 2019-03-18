@@ -67,7 +67,7 @@ public class person extends IDestroyable {
                 && (-Transform.getOffsetTranslation().getX() + (Game.getScaledWidth())) > getPosition().getX()
                 && (-Transform.getOffsetTranslation().getY()) < getPosition().getY()
                 && (-Transform.getOffsetTranslation().getY() + (Game.getScaledHeight())) > getPosition().getY())) {
-            addPosition(new Vector(GetUp()).mult(15).mult(Game.getDelta()));
+            addPosition(new Vector(GetUp()).mult(30).mult(Game.getDelta()));
         }
     }
 

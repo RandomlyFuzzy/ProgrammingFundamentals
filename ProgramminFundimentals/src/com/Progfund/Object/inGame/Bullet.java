@@ -32,7 +32,7 @@ public class Bullet extends IDrawable {
         setRotation(rot);
         addPosition(new Vector((float) rot).mult(35));
         setScale(new Vector(3, 2));
-        this.Acc = new Vector((float) rot).mult(300);
+        this.Acc = new Vector((float) rot).mult(600);
         this.damage = Damage;
     }
 

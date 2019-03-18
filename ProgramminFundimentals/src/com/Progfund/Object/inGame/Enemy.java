@@ -65,7 +65,7 @@ public class Enemy extends IDestroyable {
             Vector relpos = new Vector(getPosition()).mult(1).add(new Vector(Transform.getOffsetTranslation()).mult(1).add(new Vector(Game.getScaledWidth() / 2, Game.getScaledHeight() / 2).mult(-1)));
 //
             setRotation(Math.atan2(relpos.getY(), relpos.getX()) - Math.PI / 2);
-            addPosition(new Vector(GetUp()).mult(35).mult(Game.getDelta()));
+            addPosition(new Vector(GetUp()).mult(70).mult(Game.getDelta()));
         }
         if (((-Transform.getOffsetTranslation().getX()) < getPosition().getX()
                 && (-Transform.getOffsetTranslation().getX() + (Game.getScaledWidth())) > getPosition().getX()

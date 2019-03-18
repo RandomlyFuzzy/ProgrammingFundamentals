@@ -21,7 +21,7 @@ public class Player extends IDestroyable {
 
     private Vector Accerlation;
     private Vector Veclocity;
-    private Vector speed = new Vector(3, 4);
+    private Vector speed = new Vector(150, 200);
     private double Delay = 0.1f, current = 0;
     private boolean hasSpawned = false;
     private int horizontal = 0, vertical = 0;
@@ -117,7 +117,10 @@ public class Player extends IDestroyable {
         if (!LevelOverOverlay.isFinished()) {
             Vector relpos = new Vector(Level().getMousePos()).add(new Vector(Game.getWindowWidth() / -2, Game.getWindowHeight() / -2));
             setRotation(Math.atan2(relpos.getX(), -relpos.getY()));
-            addPosition(new Vector(new Vector(GetUp()).mult(vertical * speed.getY()).add(new Vector(GetRight()).mult(-horizontal * speed.getX()))));
+            addPosition(
+                    new Vector(new Vector(GetUp()).mult(vertical * speed.getY())
+                            .add(new Vector(GetRight()).mult(-horizontal * speed.getX())))
+                            .mult(Game.getDelta()));
 //        addPosition(new Vector(new Vector(0,-1).mult(vertical).add(new Vector(1,0).mult(-horizontal))));
 
             if ((Level().isClicking() || Level().isDragging()) && (current + Delay) <= Level().getTime()) {
@@ -140,7 +143,7 @@ public class Player extends IDestroyable {
     public void Update(Graphics2D gd) {
         DrawLastLoadedImage(gd);
         gd.setColor(Color.red);
-        gd.drawString(""+Level().GetObjectCount(), 0,-40);
+        gd.drawString("" + Level().GetObjectCount(), 0, -40);
     }
 
     /**
@@ -149,6 +152,23 @@ public class Player extends IDestroyable {
      */
     @Override
     public void onCollison(IDrawable id) {
+        if (!(id instanceof IDestroyable)) {
+            return;
+        }
+        Vector relpos
+                = new Vector(id.getPosition())
+                        .mult(-1)
+                        .add(new Vector(getPosition()))
+                        .mult(new Vector(id.getScaledSpriteWidth(), id.getScaledSpriteHeight()))
+                        .Normalized();
+        relpos.add(
+                new Vector(new Vector(GetUp())
+                        .mult(vertical * -speed.getY() * 2f)
+                        .add(new Vector(GetRight())
+                                .mult(-horizontal * -speed.getX() * 2f)))).mult(Game.getDelta());
+
+        addPosition(relpos);
+
     }
 
 }

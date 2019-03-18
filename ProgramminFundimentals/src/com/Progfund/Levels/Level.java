@@ -38,10 +38,10 @@ public class Level extends ILevel {
      *
      * @return
      */
-    public static int GetLevel(){
+    public static int GetLevel() {
         return Level.level;
     }
-    
+
     /**
      *
      * @param pointstowin
@@ -50,10 +50,10 @@ public class Level extends ILevel {
      * @param playerhealth
      * @param Level
      */
-    public Level(int pointstowin,int Difficuly,int rndSeed,int playerhealth,int Level) {
+    public Level(int pointstowin, int Difficuly, int rndSeed, int playerhealth, int Level) {
         setSimpleCollison(false);
         this.ScoretoWin = pointstowin;
-        this.Difficuly =Difficuly;
+        this.Difficuly = Difficuly;
         this.rndSeed = rndSeed;
         this.playerHealth = playerhealth;
         this.level = Level;
@@ -65,8 +65,8 @@ public class Level extends ILevel {
     @Override
     public void init() {
         Game.setWorldrelDims(new Vector(0.8f, 0.8f));
-        AddObject(new LevelGenerator(rndSeed,Difficuly));
-        p = new Player(playerHealth,ScoretoWin);
+        AddObject(new LevelGenerator(rndSeed, Difficuly));
+        p = new Player(playerHealth, ScoretoWin);
         p.setPosition(100.1f, 200f);
         AddObject(p);
         AddObject(new OverLay()).setIsCollidable(false);
@@ -98,6 +98,7 @@ public class Level extends ILevel {
      */
     @Override
     public void keyPress(KeyEvent ke) {
+        super.keytyped(ke);
         int code = ke.getKeyCode();
         if (code == KeyEvent.VK_W) {
             p.SetVerticalDir(1);
@@ -109,6 +110,13 @@ public class Level extends ILevel {
         } else if (code == KeyEvent.VK_D) {
             p.SetHorizontalDir(-1);
         }
+    }
+
+    /**
+     *
+     * @param ke
+     */
+    public void keytyped(KeyEvent ke) {
 
     }
 

@@ -122,7 +122,7 @@ public class LevelOverOverlay extends IDrawable {
                             LevelOverOverlay.setsaved(true);
                             LevelOverOverlay.getSaveButton().setMessage("Saved as " + text.getText().trim());
                             FileUtils.AppendToFile("resources/saveData/" + file + ".txt", 
-                                    text.getText().trim().replaceAll(":*", "_")+ 
+                                    text.getText().trim().replaceAll(":", "_")+ 
                                     ((Level()instanceof timedLevel)?"(t)":"") + ":" + Player.getPlayerScore() + "\n");
                         }
                     });

@@ -201,7 +201,7 @@ public class LevelGenerator extends IDrawable {
                                 if (sorrounings != 15 && HashUtils.hash(Place, new Vector(50)) % difficulty == 0) {
                                     RandomObject e = new RandomObject(50);
                                     e.setPosition(Place);
-                                    e.setScale(new Vector(2f, 2f));
+                                    e.setScale(new Vector(1.5f, 1.5f));
                                     e.SetHashParams();
 //                                    if (Rotate) {
 //                                        e.setRotation(Math.PI / 2);
