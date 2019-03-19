@@ -15,34 +15,34 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 /**
- *
- * @author RandomlyFuzzy
+ * this is for the bars above objects
+ * @author Liam Woolley 1748910
  */
 public class OverLay extends IDrawable {
 
+    /**
+     * with of the bar
+     */
     private int w = 70;
+    /**
+     * height of the bar
+     */
     private int h = 25;
 
     /**
-     *
+     * stops things from collding with it
      */
     @Override
     public void init() {
         setIsCollidable(false);
-
     }
-
-    /**
-     *
-     */
     @Override
-    public void doMove() {
-
-    }
+    public void doMove() { }
 
     /**
-     *
-     * @param gd
+     * this draws all the bars relativly to the object
+     * its similar to the HUD object but references are auto maticaly added to the manager and read from here
+     * @param gd graphical context
      */
     @Override
     public void Update(Graphics2D gd) {
@@ -56,23 +56,9 @@ public class OverLay extends IDrawable {
                 gd.fillRect(x, y, (int) (w * ((float) obj.getHealth() / (float) obj.getMaxHealth())), h);
             }
         }
-//        gd.drawLine((int)(-Transform.getOffsetTranslation().getX() - (Game.getScaledWidth())),(int)(-Transform.getOffsetTranslation().getY()- (Game.getScaledHeight())),(int)(-Transform.getOffsetTranslation().getX() + (Game.getScaledWidth()*2)),(int)(-Transform.getOffsetTranslation().getY() + (Game.getScaledHeight()*2)));
     }
-
-    /**
-     *
-     * @param id
-     */
     @Override
     public void onCollison(IDrawable id) {
-    }
-
-    /**
-     *
-     */
-    public void dispose() {
-        super.dispose();
-
     }
 
 }

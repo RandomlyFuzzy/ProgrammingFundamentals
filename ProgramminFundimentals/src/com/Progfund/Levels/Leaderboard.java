@@ -22,18 +22,40 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
+ * Leaderboard scene of the game
  *
- * @author RandomlyFuzzy
+ *
+ * @author Liam Woolley 1748910
  */
 public class Leaderboard extends ILevel {
 
+    /**
+     * used to compair to currently checking leaderboard value
+     */
     private String previousind = "";
+    /**
+     * currently checking file trimed
+     */
     private static String Currentind = "Level1";
+
+    /**
+     * storage of all the times loaded as a collection because of the sort
+     * function
+     */
     private ArrayList<String> times = new ArrayList<String>();
 
     /**
+     * default constructor
+     */
+    public Leaderboard() {
+        super();
+        //keeps the music playing the background
+        setStopAudioOnStart(false);
+    }
+
+    /**
      *
-     * @return
+     * @return the current file its checking
      */
     public static String getCurrentind() {
         return Currentind;
@@ -41,75 +63,81 @@ public class Leaderboard extends ILevel {
 
     /**
      *
-     * @param Currentind
+     * @param Currentind sets the currently checking file to that value
      */
     public static void setCurrentind(String Currentind) {
         Leaderboard.Currentind = Currentind;
     }
 
     /**
-     *
-     */
-    public Leaderboard() {
-        super();
-        setStopAudioOnStart(false);
-    }
-
-    /**
-     *
+     * creates all objects used in the level
      */
     @Override
     public void init() {
+        // for the background
         GetSprite("/Images/backgrounds/background1.png");
 
+        //creates a seachable button for each level
         for (int i = 0; i < 20; i++) {
             Button b = new Button(new Vector(((0.09f * (i % 10)) + 0.095f), ((0.075f * (i / 10)) + 0.05f)), "Level" + ((i + 1)), new HUDdelegate() {
                 public void OnClick(Button b) {
+                    //sets the current file to be reading from
                     Leaderboard.setCurrentind(b.getMessage());
                 }
             });
             AddObject(b);
             b.setScale(new Vector(0.4f, 0.5f));
         }
+        //back button to the main menu
         AddObject(new Button(new Vector(0.86f, 0.9f), "Back", new HUDdelegate() {
             @Override
             public void OnClick(Button b) {
                 Game.SetLevelActive(new MainMenu());
             }
         }));
+        //adds a mouse
         AddObject(new Mouse());
     }
 
     /**
      *
-     * @param ae
+     * @param ae timer event
      */
     @Override
     public void Update(ActionEvent ae) {
+        //if a button has been presed update once
         if (previousind != Currentind) {
+            //say what file is being read from s
             System.out.println("com.Progfund.Levels.Leaderboard.Update() loading " + Currentind);
+            //resets the collection
             times = new ArrayList<String>();
+            //adds to the collection 
             times.addAll(
                     FileUtils.GetFileSplit("Resources/savedata/" + Currentind + ".txt", "\n", true)
             );
-            System.out.println("com.Progfund.Levels.Leaderboard.Update() with " + times.size()+" entrys");
-
+            //sorts the leaderboard entry 
             times.sort(new Comparator<String>() {
                 @Override
                 public int compare(String o1, String o2) {
+                    //check to see if not an empy entry
                     if (o2.equals(new String())) {
                         return -1;
                     }
+                    //check to see if not an empy entry
                     if (o1.equals(new String())) {
                         return 1;
                     }
+                    //gets the strings stored for the score
                     String val1 = o1.substring(o1.indexOf(":") + 1).trim();
                     String val2 = o2.substring(o2.indexOf(":") + 1).trim();
-
+                    //compaires them in order sort them
                     return Double.parseDouble(val2) > Double.parseDouble(val1) ? 1 : -1;
                 }
             });
+            //if there are more than 5 entrys
             if (times.size() > 5) {
+                //save those 5 back to a file
+                //remove the rest
                 String set = "";
                 for (int i = 0; i < 5; i++) {
                     set += times.get(i) + "\n";
@@ -127,28 +155,33 @@ public class Leaderboard extends ILevel {
     @Override
     public void Draw(Graphics2D g) {
         //g.drawImage(GetSprite("/Images/backgrounds/background1.png"), Game.getWindowWidth(), 0, (Game.getWindowWidth() * -1), (Game.getWindowHeight()), null);
-        float y = 0.3f;
+        //keeps the current font
         Font f = g.getFont();
+        //create a scaled font
         Font f2 = f.deriveFont(1, Game.WorldScale().getY() * 13);
         g.setFont(f2);
-        if (times.size() != 0&&!times.get(0).equals(new String())) {
-            g.setColor(new Color(55, 55, 55, 150));
+        g.setColor(new Color(55, 55, 55, 150));
+        g.setFont(f.deriveFont(1, f.getSize() + (Game.WorldScale().getY() * ((int) Math.pow(15 - 0, 2) / 10))));
+        //if their are times
+        int w = (int) (g.getFontMetrics().stringWidth(Currentind) * 1.05f);
+        g.drawString(Currentind, (Game.getWindowWidth() / 2 - (w / 2)), (0.23f) * Game.getWindowHeight());
+        if (times.size() != 0 && !times.get(0).equals(new String())) {
 
-            g.setFont(f.deriveFont(1, f.getSize() + (Game.WorldScale().getY() * ((int) Math.pow(15 - 0, 2) / 10))));
+            //get the size of the firs entry(the biggest one)
             String s = times.get(0);
             String[] split = s.split(":");
             String str = "No " + (1) + " Place is " + split[0] + " with " + split[1] + " points";
-            int w = (int) (g.getFontMetrics().stringWidth(str) * 1.05f);
+            w = (int) (g.getFontMetrics().stringWidth(str) * 1.05f);
+            //create the rectangle to that dimentions scaled to the amount of entrys
             g.fillRect(
                     (int) ((Game.getWindowWidth() / 2) - w / 2),
-                    (int) ((0.205f) * Game.getWindowHeight()),
+                    (int) ((0.255f) * Game.getWindowHeight()),
                     (int) (w),
-                    (int) (0.120f * Game.getWindowHeight()*(times.size() >= 5 ? 5 : times.size())));
-            w = (int) (g.getFontMetrics().stringWidth(Currentind) * 1.05f);
-            g.drawString(Currentind, (Game.getWindowWidth() / 2 - (w / 2)), y);
+                    (int) (0.12f * Game.getWindowHeight() * (times.size() >= 5 ? 5 : times.size())));
 
+            //draw title            
             g.setColor(Color.WHITE);
-            int inc = 0;
+            //draw all the entrys found/saved at verying sizes
             for (int i = 0; i < (times.size() >= 5 ? 5 : times.size()); i++) {
                 g.setFont(f.deriveFont(1, f.getSize() + (Game.WorldScale().getY() * ((int) Math.pow(15 - i, 2) / 10))));
                 s = times.get(i);
@@ -157,33 +190,22 @@ public class Leaderboard extends ILevel {
                 w = g.getFontMetrics().stringWidth(str);
                 g.drawString(str,
                         Game.getWindowWidth() / 2 - w / 2,
-                        (((i % 20) * 0.12f) + 0.28f) * Game.getWindowHeight());
-                y += 0.03f;
+                        (((i % 20) * 0.12f) + 0.33f) * Game.getWindowHeight());
             }
         }
         g.setFont(f);
     }
 
-    /**
-     *
-     * @param e
-     */
     @Override
     public void keyPress(KeyEvent e) {
-
     }
 
-    /**
-     *
-     * @param e
-     */
     @Override
     public void keyRelease(KeyEvent e) {
-
     }
 
     /**
-     *
+     * set back to defualt variables when closed
      */
     public void dispose() {
         super.dispose();

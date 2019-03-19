@@ -10,25 +10,35 @@ import com.Liamengine.Engine.Components.Transform;
 import com.Liamengine.Engine.Components.Vector;
 import com.Liamengine.Engine.Entry.Game;
 import com.Progfund.Object.Menu.LevelOverOverlay;
+import com.Progfund.Object.inGame.gunComponents.Gun;
+import com.Progfund.Object.inGame.gunComponents.Pistol;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
  *
- * @author RandomlyFuzzy
+ * @author Liam Woolley 1748910
  */
 public class Player extends IDestroyable {
 
+    /**
+     * the value that is added to Velocity each frame
+     */
     private Vector Accerlation;
-    private Vector Veclocity;
-    private Vector speed = new Vector(150, 200);
-    private double Delay = 0.1f, current = 0;
-    private boolean hasSpawned = false;
-    private int horizontal = 0, vertical = 0;
-    private boolean HasFinished = false;
+    /**
+     * the amount that is added to the position each frame(multiplyed by delta time)
+     */
+    private Vector Velocity;
+    /**
+     * speed scaler of inputs
+     */
+    private Vector speed = new Vector(300, 400);
+    private int horizontal = 0;
+    private vertical = 0;
     private int damage = 25;
     private static int Score = 0;
     private static int scoreNeeded = 0;
+    private Gun gun = new Pistol(this, 0.1f,damage);
 
     /**
      *
@@ -38,7 +48,7 @@ public class Player extends IDestroyable {
     public Player(int health, int scoreneeded) {
         super(health);
         Accerlation = new Vector(0, 0);
-        Veclocity = new Vector(0, 0);
+        Velocity = new Vector(0, 0);
         Score = 0;
         scoreNeeded = scoreneeded;
     }
@@ -123,9 +133,8 @@ public class Player extends IDestroyable {
                             .mult(Game.getDelta()));
 //        addPosition(new Vector(new Vector(0,-1).mult(vertical).add(new Vector(1,0).mult(-horizontal))));
 
-            if ((Level().isClicking() || Level().isDragging()) && (current + Delay) <= Level().getTime()) {
-                Level().AddObject(new Bullet(new Vector(getPosition()), getRotation(), damage));
-                current = Level().getTime();
+            if ((Level().isClicking() || Level().isDragging())) {
+                gun.fire();
             }
             Transform.setOffsetTranslation(new Vector(getPosition()).mult(-1).add(new Vector(Game.getScaledWidth() / 2, Game.getScaledHeight() / 2)));
             if (getHealth() <= 0) {

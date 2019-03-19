@@ -22,35 +22,53 @@ import java.awt.event.KeyEvent;
 import javax.sound.sampled.Clip;
 
 /**
- *
- * @author RandomlyFuzzy
+ * this is the main game level it uses random seeds to keep copys different but simlar
+ * 
+ * 
+ * 
+ * @author Liam Woolley 1748910
  */
 public class Level extends ILevel {
 
+    /**
+     * player refernese so key's pressed can be passed onto
+     */
     private Player p;
+    /**
+     * defined score to win
+     * @see #LevelSelect
+     */
     private int ScoretoWin = 2000;
+    /**
+     * used to detemin the frequency of things shown
+     */
     private int Difficuly = 2000;
+    /**
+     * the see that generates things
+     */
     private int rndSeed = 2000;
+    /**
+     * iniital player health
+     */
     private int playerHealth = 2000;
+    /**
+     * level number for storing to file
+     */
     private static int level = 0;
 
-    /**
-     *
-     * @return
-     */
-    public static int GetLevel() {
-        return Level.level;
-    }
+
 
     /**
      *
-     * @param pointstowin
+     * the params just set to the corrisponding variable
+     * @param pointstowin 
      * @param Difficuly
      * @param rndSeed
      * @param playerhealth
      * @param Level
      */
     public Level(int pointstowin, int Difficuly, int rndSeed, int playerhealth, int Level) {
+        //uses more than one collision perframe
         setSimpleCollison(false);
         this.ScoretoWin = pointstowin;
         this.Difficuly = Difficuly;
@@ -58,9 +76,15 @@ public class Level extends ILevel {
         this.playerHealth = playerhealth;
         this.level = Level;
     }
-
     /**
      *
+     * @return the current level index
+     */
+    public static int GetLevel() {
+        return Level.level;
+    }
+    /**
+     * defines all the objects used in the level
      */
     @Override
     public void init() {
@@ -81,24 +105,22 @@ public class Level extends ILevel {
      * @param ae
      */
     @Override
-    public void Update(ActionEvent ae) {
-    }
+    public void Update(ActionEvent ae) { }
 
     /**
      *
      * @param gd
      */
     @Override
-    public void Draw(Graphics2D gd) {
-    }
+    public void Draw(Graphics2D gd) {  }
 
     /**
      *
-     * @param ke
+     * @param ke the key that was pressed
      */
     @Override
     public void keyPress(KeyEvent ke) {
-        super.keytyped(ke);
+        //this is all for the player 
         int code = ke.getKeyCode();
         if (code == KeyEvent.VK_W) {
             p.SetVerticalDir(1);
@@ -114,10 +136,11 @@ public class Level extends ILevel {
 
     /**
      *
-     * @param ke
+     * @param ke the key that was pressed
      */
+    @Override
     public void keytyped(KeyEvent ke) {
-
+        keyPress(ke);
     }
 
     /**
@@ -127,6 +150,7 @@ public class Level extends ILevel {
     @Override
     public void keyRelease(KeyEvent ke) {
         int code = ke.getKeyCode();
+        //this is all for the player 
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_S) {
             p.SetVerticalDir(0);
         }
@@ -137,7 +161,7 @@ public class Level extends ILevel {
 
     /**
      *
-     * @return
+     * @return the score to win used to compair if the player has won
      */
     public int getScoretoWin() {
         return ScoretoWin;
@@ -145,7 +169,7 @@ public class Level extends ILevel {
 
     /**
      *
-     * @param ScoretoWin
+     * @param ScoretoWin sets the score to win
      */
     public void setScoretoWin(int ScoretoWin) {
         this.ScoretoWin = ScoretoWin;

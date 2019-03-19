@@ -10,7 +10,7 @@ import com.Progfund.Object.inGame.IDestroyable;
 
 /**
  *
- * @author RandomlyFuzzy
+ * @author Liam Woolley 1748910
  */
 public class HashUtils {
     

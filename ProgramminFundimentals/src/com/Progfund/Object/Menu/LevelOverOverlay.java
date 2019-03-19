@@ -33,7 +33,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author RandomlyFuzzy
+ * @author Liam Woolley 1748910
  */
 public class LevelOverOverlay extends IDrawable {
 

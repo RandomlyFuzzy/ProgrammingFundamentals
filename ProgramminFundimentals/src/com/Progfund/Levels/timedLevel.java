@@ -23,29 +23,42 @@ import java.awt.event.KeyEvent;
 import javax.sound.sampled.Clip;
 
 /**
- *
- * @author RandomlyFuzzy
+ * identical to the Level class but has a limit 
+ * 
+ * @author Liam Woolley 1748910
  */
 public class timedLevel extends Level {
 
-    private static float TimeLeft = 10;
-    private boolean doneonce = false;
-    private int hudIndex = 0;
     /**
-     *
+     * 
+     * amount of time to count down from
+     */
+    private static float totalTime = 10;
+    /**
+     * used to add the levelOverOvey once and only once
+     */
+    private boolean doneonce = false;
+    /** 
+     * stores the hud index
+     */
+    private int hudIndex = 0;
+
+    /**
+     * the params just set to the corrisponding variable in this class and inherited class
      * @param pointstowin
      * @param Difficuly
      * @param rndSeed
      * @param playerhealth
+     * @param totalTime
      * @param Level
      */
-    public timedLevel(int pointstowin, int Difficuly, int rndSeed, int playerhealth, float endTime, int Level) {
+    public timedLevel(int pointstowin, int Difficuly, int rndSeed, int playerhealth, float totalTime, int Level) {
         super(pointstowin, Difficuly, rndSeed, playerhealth, Level);
-        TimeLeft = endTime;
+        this.totalTime = totalTime;
     }
 
     /**
-     *
+     * just does the same as Level class but adds a hud an a ref to a string to display
      */
     @Override
     public void init() {
@@ -56,16 +69,16 @@ public class timedLevel extends Level {
 
     
     /**
-     *
-     * @param ae
+     * check if elapsed time is greater than total time given
+     * @param ae timer event
      */
     @Override
     public void Update(ActionEvent ae) {
-        if (getTime()>TimeLeft&&!doneonce) {
+        if (getTime()>totalTime&&!doneonce) {
             AddObject(new LevelOverOverlay()).setIsCollidable(false);
             doneonce = true;
         }
-        HUD.EditText(hudIndex,""+String.format("%.2f",(TimeLeft-getTime())));
+        HUD.EditText(hudIndex,""+String.format("%.2f",(totalTime-getTime())));
     }
 
     /**
@@ -77,8 +90,8 @@ public class timedLevel extends Level {
     }
 
     /**
-     *
-     * @param ke
+     *  just does the update in the parent class
+     * @param ke key event 
      */
     @Override
     public void keyPress(KeyEvent ke) {
@@ -87,13 +100,19 @@ public class timedLevel extends Level {
     }
 
     /**
-     *
+     * just does the update in the parent class
      * @param ke
      */
     @Override
     public void keyRelease(KeyEvent ke) {
         super.keyRelease(ke);
+    }
 
+    /**
+     * dispose of the static just incase
+     */
+    public void dispose(){
+        totalTime  =0 ;        
     }
 
 }

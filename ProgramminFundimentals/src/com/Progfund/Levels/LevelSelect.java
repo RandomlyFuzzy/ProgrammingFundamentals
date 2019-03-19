@@ -21,18 +21,26 @@ import static java.awt.image.ImageObserver.WIDTH;
 
 /**
  *
+ * the level that lets the player decide the level they want to play
  * @author Liam Woolley 1748910
  */
 public class LevelSelect extends ILevel {
 
     /**
-     *
+     * keeps the audio running in the background
      */
     public LevelSelect() {
         super();
         setStopAudioOnStart(false);
     }
 
+    /**
+     * matrix off the level paramiters
+     * [n][0] is the score to win
+     * [n][1] is the difficulty
+     * [n][2] random seed
+     * [n][3] player start health
+     */
     private static final int[][] values = {
         {1000, 6,  4, 300},
         {2000, 6, 51, 300},
@@ -62,7 +70,7 @@ public class LevelSelect extends ILevel {
 
     /**
      *
-     * @return
+     * @return the matrix for the levels
      */
     public static int[][] getValues() {
         return values;
@@ -70,35 +78,37 @@ public class LevelSelect extends ILevel {
 
     /**
      *
-     * @param i
+     * @param i the level thats wanting to beloaded
      */
     public static void LoadLevelFromID(int i) {
-        i-=1;
-        System.out.println("com.Progfund.Levels.LevelSelect.LoadLevelFromID()");
         Game.SetLevelActive(new Level(values[i][0], values[i][1], values[i][2], values[i][3], i+1));
     }
 
     /**
-     *
+     * sets up for the scene
      */
     @Override
     public void init() {
+        //creats aall the level select button's level + 1-20 placed spaced out
         for (int i = 0; i < 20; i++) {
             AddObject(new Button(new Vector(((0.2f * (i % 5)) + 0.1f), ((0.2f * (i / 5)) + 0.1f)), ("Level" + (i + 1)), new HUDdelegate() {
                 public void OnClick(Button b) {
                     String s = b.getMessage().substring(5);
                     System.out.println(".OnClick() " + s);
-                    LevelSelect.LoadLevelFromID(Integer.parseInt(s.trim()));
+                    LevelSelect.LoadLevelFromID(Integer.parseInt(s.trim())-1);
                 }
             }));
         }
+        //back button
         AddObject(new Button(new Vector(0.9f, 0.9f), "Back", new HUDdelegate() {
             @Override
             public void OnClick(Button b) {
                 Game.SetLevelActive(new MainMenu());
             }
         }));
+        // adds a mouse
         AddObject(new Mouse());
+        //default scene
         setBackgroundimage(GetSprite("/Images/backgrounds/background1.png"));
     }
 
@@ -107,32 +117,27 @@ public class LevelSelect extends ILevel {
      * @param ae
      */
     @Override
-    public void Update(ActionEvent ae) {
-    }
+    public void Update(ActionEvent ae) {}
 
     /**
      *
      * @param g
      */
     @Override
-    public void Draw(Graphics2D g) {
-        g.setColor(Color.WHITE);
-    }
+    public void Draw(Graphics2D g) {}
 
     /**
      *
      * @param e
      */
     @Override
-    public void keyPress(KeyEvent e) {
-    }
+    public void keyPress(KeyEvent e) {}
 
     /**
      *
      * @param e
      */
     @Override
-    public void keyRelease(KeyEvent e) {
-    }
+    public void keyRelease(KeyEvent e) {}
 
 }

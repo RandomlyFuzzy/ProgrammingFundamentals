@@ -20,19 +20,23 @@ import java.awt.event.KeyEvent;
 import static java.awt.image.ImageObserver.WIDTH;
 
 /**
- *
+ * this is the level select for the timed levels
+ * 
  * @author Liam Woolley 1748910
  */
 public class LevelSelecttimed extends ILevel {
 
     /**
-     *
+     * set music to continue when loaded
      */
     public LevelSelecttimed() {
         super();
         setStopAudioOnStart(false);
     }
 
+    /**
+     * times matrix for all the levels
+     */
     private static final float[] times = {
         300,
         240,
@@ -55,72 +59,43 @@ public class LevelSelecttimed extends ILevel {
         240,
         180
     };
-    private static final int[][] values = {
-        {1000, 6, 4, 300},
-        {2000, 6, 51, 300},
-        {3000, 6, 1, 200},
-        {4000, 6, 47, 200},
-        {1000, 5, 4, 300},
-        {2000, 5, 51, 300},
-        {3000, 5, 1, 200},
-        {4000, 5, 47, 200},
-        {1000, 4, 25, 300},
-        {2000, 4, 20, 300},
-        {3000, 4, 53, 200},
-        {4000, 4, 20, 200},
-        {1000, 3, 2, 300},
-        {2000, 3, 415, 300},
-        {3000, 3, 251, 200},
-        {4000, 3, 45, 200},
-        {1000, 2, 454, 400},
-        {2000, 2, 455, 400},
-        {3000, 2, 222, 300},
-        {4000, 2, 21, 300},
-        {1000, 1, 28, 500},
-        {2000, 1, 29, 500},
-        {3000, 1, 60, 400},
-        {4000, 1, 30, 400}
-    };
+    
 
     /**
      *
-     * @return
-     */
-    public static int[][] getValues() {
-        return values;
-    }
-
-    /**
-     *
-     * @param i
+     * @param i the level index levelnum-1
      */
     public static void LoadLevelFromID(int i) {
-        i -=1;
+        int[][] values = LevelSelect.getValues();
         System.out.println("com.Progfund.Levels.LevelSelect.LoadLevelFromID()");
         Game.SetLevelActive(new timedLevel(values[i][0], values[i][1], values[i][2], values[i][3],times[i], i+1));
     }
 
     /**
-     *
+     * sets up Level 
      */
     @Override
     public void init() {
+        //creates all the level buttons from level 1 ... 20
         for (int i = 0; i < 20; i++) {
             AddObject(new Button(new Vector(((0.2f * (i % 5)) + 0.1f), ((0.2f * (i / 5)) + 0.1f)), ("Level" + (i + 1)), new HUDdelegate() {
                 public void OnClick(Button b) {
                     String s = b.getMessage().substring(5);
                     System.out.println(".OnClick() " + s);
-                    LevelSelecttimed.LoadLevelFromID(Integer.parseInt(s.trim()));
+                    LevelSelecttimed.LoadLevelFromID(Integer.parseInt(s.trim())-1);
                 }
             }));
         }
+        //adds a backbutto
         AddObject(new Button(new Vector(0.9f, 0.9f), "Back", new HUDdelegate() {
             @Override
             public void OnClick(Button b) {
                 Game.SetLevelActive(new MainMenu());
             }
         }));
+        //add a mouse 
         AddObject(new Mouse());
+        //sets background 
         setBackgroundimage(GetSprite("/Images/backgrounds/background1.png"));
     }
 
@@ -129,32 +104,27 @@ public class LevelSelecttimed extends ILevel {
      * @param ae
      */
     @Override
-    public void Update(ActionEvent ae) {
-    }
+    public void Update(ActionEvent ae) {}
 
     /**
      *
      * @param g
      */
     @Override
-    public void Draw(Graphics2D g) {
-        g.setColor(Color.WHITE);
-    }
+    public void Draw(Graphics2D g) {}
 
     /**
      *
      * @param e
      */
     @Override
-    public void keyPress(KeyEvent e) {
-    }
+    public void keyPress(KeyEvent e) {}
 
     /**
      *
      * @param e
      */
     @Override
-    public void keyRelease(KeyEvent e) {
-    }
+    public void keyRelease(KeyEvent e) {}
 
 }

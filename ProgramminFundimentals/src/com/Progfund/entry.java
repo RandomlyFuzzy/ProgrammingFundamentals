@@ -15,7 +15,7 @@ import com.Progfund.Levels.MainMenu;
 
 /**
  *
- * @author RandomlyFuzzy
+ * @author Liam Woolley 1748910
  */
 public class entry {
 
@@ -24,7 +24,6 @@ public class entry {
      */
     public static void main(String[] args) {
         LevelLoader.LL.SetLevels(new ILevel[]{new MainMenu(),new Leaderboard()});
-        new PerlinUtil();
         new Game(new MainMenu());
         Game.setDefualtLevel(new MainMenu());
         Game.setWorldrelDims(new Vector(1,1));

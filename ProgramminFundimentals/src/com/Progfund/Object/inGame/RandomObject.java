@@ -14,12 +14,10 @@ import java.awt.Graphics2D;
 
 /**
  *
- * @author RandomlyFuzzy
+ * @author Liam Woolley 1748910
  */
 public class RandomObject extends IDestroyable {
 
-    private double current = 0;
-    private double Delay = 0.8;
 
     /**
      *
@@ -39,12 +37,8 @@ public class RandomObject extends IDestroyable {
         setScoreToAdd(points);
     }
 
-    /**
-     *
-     */
     @Override
-    public void init() {
-    }
+    public void init() {}
 
     /**
      *

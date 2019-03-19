@@ -12,26 +12,28 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 /**
- *
+ * generic hud for drawing text to the screen at 
+ * certain points and editing the location or the text value
+ * 
  * @author Liam Woolley 1748910
  */
 public class HUD extends IDrawable {
 
+    /**
+     * collection of all the texts
+     */
     private static ArrayList<String> texts = new ArrayList<String>();
+    /**
+     * collection of all the texts draw location
+     */
     private static ArrayList<Vector> textsPos = new ArrayList<Vector>();
 
-    /**
-     *
-     */
-    public HUD() {
-        super();
-    }
 
     /**
      *
-     * @param text
-     * @param position
-     * @return
+     * @param text the inital text value
+     * @param position the inital text location
+     * @return the reference of the text to edit later
      */
     public static int AddText(String text, Vector position) {
         texts.add(text);
@@ -41,8 +43,8 @@ public class HUD extends IDrawable {
 
     /**
      *
-     * @param ind
-     * @param Text
+     * @param ind the reference location
+     * @param Text the text tp change it to
      */
     public static void EditText(int ind, String Text) {
         if (texts.size() <= ind || ind < 0) {
@@ -53,8 +55,8 @@ public class HUD extends IDrawable {
 
     /**
      *
-     * @param ind
-     * @param pos
+     * @param ind the reference location
+     * @param pos the text position to be changed to
      */
     public static void EditText(int ind, Vector pos) {
         textsPos.set(ind, pos);
@@ -73,8 +75,7 @@ public class HUD extends IDrawable {
      *
      */
     @Override
-    public void doMove() {
-    }
+    public void doMove() {}
 
     /**
      *
@@ -82,8 +83,7 @@ public class HUD extends IDrawable {
      */
     @Override
     public void Update(Graphics2D g) {
-
-//        updateTime =  System.nanoTime();
+        //draws all the strings at the points specified
         for (int i = 0; i < texts.size(); i++) {
             g.drawString(this.texts.get(i), this.textsPos.get(i).getX(),this.textsPos.get(i).getY());
         }
@@ -96,12 +96,10 @@ public class HUD extends IDrawable {
      * @param im
      */
     @Override
-    public void onCollison(IDrawable im) {
-
-    }
+    public void onCollison(IDrawable im) { }
 
     /**
-     *
+     *reset the object
      */
     @Override
     public void dispose() {

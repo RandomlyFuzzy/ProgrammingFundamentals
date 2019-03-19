@@ -14,7 +14,9 @@ import java.awt.Graphics2D;
 
 /**
  *
- * @author RandomlyFuzzy
+ * this is pickup that the player can interact with to get points from 
+ * 
+ * @author Liam Woolley 1748910
  */
 public class PickUp extends IDestroyable {
 
@@ -28,11 +30,10 @@ public class PickUp extends IDestroyable {
     }
 
     /**
-     *
+     * sets the defualt image and scale
      */
     @Override
     public void init() {
-        
         GetSprite("/images/pickup.png");
         setScale(new Vector(0.65f,0.65f));
     }
@@ -42,13 +43,16 @@ public class PickUp extends IDestroyable {
      */
     @Override
     public void doMove() {
-        if(this.getHealth()!= this.getMaxHealth()){
+        //keeps it alive
+        if(this.getHealth() != this.getMaxHealth()){
             this.setHealth(this.getMaxHealth());
         }
+        //destroys once game is over
         if (LevelOverOverlay.isFinished()) {
             Level().RemoveObject(this);
             IDestroyableManager.remove(this);
         }
+        //destroys if out of the screen bounds * 2
         if (!((-Transform.getOffsetTranslation().getX() - (Game.getScaledWidth()) < getPosition().getX()
                 && (-Transform.getOffsetTranslation().getX() + (Game.getScaledWidth() * 2)) > getPosition().getX()
                 && (-Transform.getOffsetTranslation().getY() - (Game.getScaledHeight())) < getPosition().getY()
@@ -70,18 +74,19 @@ public class PickUp extends IDestroyable {
 
     /**
      *
-     * @param id
+     * @param id collision managing function
      */
     @Override
     public void onCollison(IDrawable id) {
+        //if not a player return
         if (!(id instanceof Player)) {
             return;
         }
-        IDestroyableManager.remove(this);
+        //adds to player score, generates partical and removes from screen
         Player.addScore(getScore());
-        Level().RemoveObject(this);
         ParticalGenerator.add(this);
-
+        Level().RemoveObject(this);
+        IDestroyableManager.remove(this);
     }
 
 }

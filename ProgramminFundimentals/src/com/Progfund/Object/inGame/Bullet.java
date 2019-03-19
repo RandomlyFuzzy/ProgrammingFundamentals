@@ -13,8 +13,9 @@ import com.Progfund.Levels.Level;
 import java.awt.Graphics2D;
 
 /**
- *
- * @author RandomlyFuzzy
+ * bullet it damages IDestroyables
+ * 
+ * @author Liam Woolley 1748910
  */
 public class Bullet extends IDrawable {
 
@@ -22,22 +23,27 @@ public class Bullet extends IDrawable {
     private int damage = 0;
 
     /**
-     *
-     * @param start
-     * @param rot
-     * @param Damage
+     * @param start start position 
+     * @param rot start rotation
+     * @param Damage bullet damage
      */
     public Bullet(Vector start, double rot, int Damage) {
+        //sets the postition
         setPosition(start);
+        //sets the rotation
         setRotation(rot);
+        //offset so its slightly foward
         addPosition(new Vector((float) rot).mult(35));
+        //scales the bullet to be more visable
         setScale(new Vector(3, 2));
+        //set the position added increment
         this.Acc = new Vector((float) rot).mult(600);
+        //set the damage that is delt upon hit
         this.damage = Damage;
     }
 
     /**
-     *
+     * loads the image for ti
      */
     @Override
     public void init() {
@@ -45,7 +51,8 @@ public class Bullet extends IDrawable {
     }
 
     /**
-     *
+     * check the bounds 
+     * if within move else destroys it and removes from ILevel Collection
      */
     @Override
     public void doMove() {
@@ -60,7 +67,7 @@ public class Bullet extends IDrawable {
     }
 
     /**
-     *
+     * draws the bubllet
      * @param gd
      */
     @Override
@@ -70,6 +77,7 @@ public class Bullet extends IDrawable {
 
     /**
      *
+     * damages IDestroyables then deletes self
      * @param id
      */
     @Override
@@ -77,12 +85,9 @@ public class Bullet extends IDrawable {
         if (!(id instanceof IDestroyable) || (id instanceof PickUp)) {
             return;
         }
-
         IDestroyable des = (IDestroyable) id;
         des.Damage(damage);
         Level().RemoveObject(this);
-        System.out.println("com.Progfund.Object.inGame.Bullet.onCollison() " + des.getHealth());
-        System.out.println("com.Progfund.Object.inGame.Bullet.onCollison() " + id.getClass().getName().toString());
     }
 
 }
