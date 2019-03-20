@@ -183,7 +183,8 @@ public class Leaderboard extends ILevel {
             g.setColor(Color.WHITE);
             //draw all the entrys found/saved at verying sizes
             for (int i = 0; i < (times.size() >= 5 ? 5 : times.size()); i++) {
-                g.setFont(f.deriveFont(1, f.getSize() + (Game.WorldScale().getY() * ((int) Math.pow(15 - i, 2) / 10))));
+                //have to scale the text manually
+                g.setFont(f.deriveFont(1, f.getSize() + (Game.WorldScale().getY() * ((int) Math.pow((15 - i*3)+1, 2) / 10))));
                 s = times.get(i);
                 split = s.split(":");
                 str = "No " + (i + 1) + " Place is " + split[0] + " with " + split[1] + " score";

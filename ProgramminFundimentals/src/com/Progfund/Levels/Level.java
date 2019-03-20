@@ -120,7 +120,7 @@ public class Level extends ILevel {
      */
     @Override
     public void keyPress(KeyEvent ke) {
-        //this is all for the player 
+        //this is all for the player movement
         int code = ke.getKeyCode();
         if (code == KeyEvent.VK_W) {
             p.SetVerticalDir(1);
@@ -150,7 +150,7 @@ public class Level extends ILevel {
     @Override
     public void keyRelease(KeyEvent ke) {
         int code = ke.getKeyCode();
-        //this is all for the player 
+        //this is all for the player  movement
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_S) {
             p.SetVerticalDir(0);
         }

@@ -34,7 +34,7 @@ public class Player extends IDestroyable {
     /**
      * speed scaler of inputs
      */
-    private Vector speed = new Vector(300, 400);
+    private Vector speed = new Vector(150, 200);
     /**
      * Left Right Axis reference
      */
@@ -139,15 +139,16 @@ public class Player extends IDestroyable {
             setRotation(Math.atan2(relpos.getX(), -relpos.getY()));
             //adds to the player current postion (Movement of player)
             addPosition(
-                    new Vector(
-                        //gets the relative up vector and scales apprioratly
-                        new Vector(GetUp()).mult(vertical * speed.getY())
-                        //adds the relative right vector
-                        .add(
-                        //scales apprioratly
-                        new Vector(GetRight()).mult(-horizontal * speed.getX())))
-                        //scales by the game speed so it stays constant move rate
-                        .mult(Game.getDelta()));
+                    //gets the relative up vector and scales apprioratly
+                    new Vector(new Vector(0, -1)
+                            .mult(vertical * speed.getY() * 2f)
+                            //adds the right vector
+                            .add(
+                            new Vector(1, 0)
+                            //scales apprioratly
+                            .mult(-horizontal * speed.getX() * 2f)))
+                            //scales by the game speed so it stays constant move rate
+                            .mult(Game.getDelta()));
 
             //for firing the guns 
             // if mouse is being pressed and/or moved
@@ -156,8 +157,7 @@ public class Player extends IDestroyable {
                 if (Level().GetMouseButtonDown(1)) {
                     //fires gun
                     pistol.fire();
-                } else 
-                //right click
+                } else //right click
                 if (Level().GetMouseButtonDown(3)) {
                     //fires gun
                     shotgun.fire();
@@ -185,7 +185,7 @@ public class Player extends IDestroyable {
 
     /**
      *
-     * @param id check for collisons with objects and pushes out 
+     * @param id check for collisons with objects and pushes out
      */
     @Override
     public void onCollison(IDrawable id) {
@@ -199,12 +199,12 @@ public class Player extends IDestroyable {
                         .add(new Vector(getPosition()))
                         .mult(new Vector(id.getScaledSpriteWidth(), id.getScaledSpriteHeight()))
                         .Normalized()
-                        .mult((float)new Vector(id.getSpriteWidth(),id.getSpriteHeight()).Lengthsqrt());
+                        .mult((float) new Vector(id.getSpriteWidth(), id.getSpriteHeight()).Lengthsqrt());
         //reversing the direction moving vector to push out
         relpos.add(
-                new Vector(new Vector(GetUp())
+                new Vector(new Vector(0, -1)
                         .mult(vertical * -speed.getY() * 2f)
-                        .add(new Vector(GetRight())
+                        .add(new Vector(1, 0)
                                 .mult(-horizontal * -speed.getX() * 2f)))).mult(Game.getDelta());
         //translates the player
         addPosition(relpos);

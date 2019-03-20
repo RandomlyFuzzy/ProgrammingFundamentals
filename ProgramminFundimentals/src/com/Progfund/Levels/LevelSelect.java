@@ -41,7 +41,7 @@ public class LevelSelect extends ILevel {
      * [n][2] random seed
      * [n][3] player start health
      */
-    private static final int[][] values = {
+    private static final int[][] VALUES = {
         {1000, 6,  4, 600},
         {2000, 6, 51, 600},
         {3000, 6,  1, 500},
@@ -73,7 +73,7 @@ public class LevelSelect extends ILevel {
      * @return the matrix for the levels
      */
     public static int[][] getValues() {
-        return values;
+        return VALUES;
     }
 
     /**
@@ -81,7 +81,7 @@ public class LevelSelect extends ILevel {
      * @param i the level thats wanting to beloaded
      */
     public static void LoadLevelFromID(int i) {
-        Game.SetLevelActive(new Level(values[i][0], values[i][1], values[i][2], values[i][3], i+1));
+        Game.SetLevelActive(new Level(VALUES[i][0], VALUES[i][1], VALUES[i][2], VALUES[i][3], i+1));
     }
 
     /**

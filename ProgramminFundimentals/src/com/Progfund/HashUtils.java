@@ -18,21 +18,19 @@ import com.Progfund.Object.inGame.IDestroyable;
 public class HashUtils {
     
     
-    
-    
     /**
-     * this is just simle bitwise hashing function nothing fancy
+     * this is just simpe bitwise hashing function nothing fancy
      * just uses position to obtain fairly unique identifier for 
      * each object that can be checked to see if an object is 
      * similar upon spawn 
-     * @param a vector a oftern the position
+     * @param a vector a often the position
      * @return a simi-unique hash
      */
     public static int hash(Vector a){
         //scaling to a certain point too much and it will just remove the firs bytes of the int and make it cycle more oftern
         int a0 = (int)(a.getX()*1000000f);
         int a1 = (int)(a.getY()*1000000f);
-               
+        //then they are XORed together
         int hash = a0^a1;
         return hash;
     }
