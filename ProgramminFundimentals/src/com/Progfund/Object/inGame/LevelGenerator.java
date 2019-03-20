@@ -138,7 +138,7 @@ public class LevelGenerator extends IDrawable {
                         //gets the vector to place it on the screen
                         Vector Place = new Vector(x, y).add(new Vector(places[pos]).mult(Size));
                         //will be uniquely placed(only one spawned can be spawned on that spot that currently exsist)
-                        if (IDestroyableManager.willBeUnique(Place, new Vector(100)) && HashUtils.hash(Place, new Vector(100)) % difficulty == 0) {
+                        if (IDestroyableManager.willBeUnique(Place) && HashUtils.hash(Place) % difficulty == 0) {
                             //sets health
                             Enemy e = new Enemy(100);
                             //sets position 
@@ -166,7 +166,6 @@ public class LevelGenerator extends IDrawable {
 
                             //set the inital values
                             Vector V1 = Vector.Zero();
-                            Vector V2 = Vector.Zero();
 
                             //precheck to make it look nicer 
                             //used to get the vectors for a hash
@@ -174,7 +173,6 @@ public class LevelGenerator extends IDrawable {
                             if (sorrounings != 0 && sorrounings != 4) {
                                 //Car spawn or road
                                 V1 = new Vector(x, y).add(new Vector(places[(pos) % 4 + 8]).mult(Size));
-                                V2 = new Vector(50);
                             } else 
                             //only has a road below it 
                             if (sorrounings == 4) {
@@ -182,24 +180,21 @@ public class LevelGenerator extends IDrawable {
                                 if (pos % 4 == 2) {
                                     //car spawn on driveway
                                     V1 = new Vector(x, y).add(new Vector(places[(pos) % 4 + 8]).mult(Size).add(new Vector(-0f, 0.3f).mult(Size)));
-                                    V2 = new Vector(25);
                                 } else 
                                 //bottom left of the tile
                                 if (pos % 4 == 3) {
                                     //mailbox on garden
                                     V1 = new Vector(x, y).add(new Vector(places[(pos) % 4 + 8]).mult(Size)).add(new Vector(-0.1f, 0.3f).mult(Size));
-                                    V2 = new Vector(25);
                                 } else {
                                     //people on house
                                     V1 = new Vector(x, y).add(new Vector(places[(pos) % 4 + 8]).mult(Size)).add(new Vector(0.3f, -0.30f).mult(Size));
-                                    V2 = new Vector(25);
                                 }
                             }
                             //checks for a unique spawn location
                             //same as above where if statments are  but this \/ creates ~ N(number or possable spawn locations)/difficulty amount 
-                            if (IDestroyableManager.willBeUnique(V1, V2) && HashUtils.hash(V1, V2) % difficulty == 0) {
+                            if (IDestroyableManager.willBeUnique(V1) && HashUtils.hash(V1) % difficulty == 0) {
                                 if (sorrounings != 0 && sorrounings != 4) {
-                                    RandomObject e = new RandomObject(50);
+                                    StaticObject e = new StaticObject(50);
                                     e.setPosition(V1);
                                     e.setScale(new Vector(0.6f, 0.6f));
                                     e.SetHashParams();
@@ -208,10 +203,10 @@ public class LevelGenerator extends IDrawable {
                                     }
                                     e.GetSprite("/images/car" + (r.nextInt(3) + 1) + ".png");
                                     Level().AddObject(e);
-                                } else if (sorrounings != 0 && HashUtils.hash(V1, V2) % difficulty == 0) {
+                                } else if (sorrounings != 0 && HashUtils.hash(V1) % difficulty == 0) {
 //                                    Place = new Vector(x, y).add(new Vector(places[(pos) % 4 + 4]).mult(Size));
                                     if (pos % 4 == 2) {
-                                        RandomObject p = new RandomObject(25, 100);
+                                        StaticObject p = new StaticObject(25, 100);
                                         p.setPosition(V1);
                                         p.setScale(new Vector(0.6f, 0.6f));
                                         p.setRotation(Math.PI / 2);
@@ -219,7 +214,7 @@ public class LevelGenerator extends IDrawable {
                                         p.GetSprite("/images/car" + (r.nextInt(3) + 1) + ".png");
                                         Level().AddObject(p);
                                     } else if (pos % 4 == 3) {
-                                        RandomObject p = new RandomObject(25, 20);
+                                        StaticObject p = new StaticObject(25, 20);
                                         p.setPosition(V1);
 //                                        p.setScale(new Vector(0.6f, 0.6f));
                                         p.SetHashParams();
@@ -240,16 +235,16 @@ public class LevelGenerator extends IDrawable {
                             //gets the indeted vectors(not on the corners)
                             Vector Place = new Vector(x, y).add(new Vector(places[(pos) % 4 + 4]).mult(Size));
                             //check to see if wil be unique
-                            if (IDestroyableManager.willBeUnique(Place, new Vector(100))) {
+                            if (IDestroyableManager.willBeUnique(Place)) {
                                 //if hash % diffult is N stop all the other objects from spawning
-                                if (sorrounings != 15 && HashUtils.hash(Place, new Vector(50)) % difficulty == 0) {
-                                    RandomObject e = new RandomObject(50);
+                                if (sorrounings != 15 && HashUtils.hash(Place) % difficulty == 0) {
+                                    StaticObject e = new StaticObject(50);
                                     e.setPosition(Place);
                                     e.setScale(new Vector(1.5f, 1.5f));
                                     e.SetHashParams();
                                     e.GetSprite("/images/bin.png");
                                     Level().AddObject(e);
-                                } else if (sorrounings == 15 && HashUtils.hash(Place, new Vector(25)) % difficulty == 0) {
+                                } else if (sorrounings == 15 && HashUtils.hash(Place) % difficulty == 0) {
                                     person p = new person(25, 100);
                                     p.setPosition(Place);
                                     p.SetHashParams();
@@ -261,8 +256,8 @@ public class LevelGenerator extends IDrawable {
                     } else {
                         //spawning the bins on the grass
                         Vector Place = new Vector(x, y).add(new Vector(places[(pos)]).mult(Size));
-                        if (IDestroyableManager.willBeUnique(Place, new Vector(100))
-                                && HashUtils.hash(Place, new Vector(300)) % difficulty == 0) {
+                        if (IDestroyableManager.willBeUnique(Place)
+                                && HashUtils.hash(Place) % difficulty == 0) {
                             PickUp e = new PickUp(300);
                             e.setPosition(Place);
                             e.setScale(new Vector(2f, 2f));

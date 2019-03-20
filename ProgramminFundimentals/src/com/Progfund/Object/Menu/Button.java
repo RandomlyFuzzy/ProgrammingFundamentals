@@ -17,43 +17,37 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 
 /**
- *
+ * this is a delegate base button where the dev inputs the function they want to
+ * call in the constructor and it does it in level
+ * 
+ * 
  * @author Liam Woolley 1748910
  */
 public class Button extends IDrawable {
 
+    /**
+     * message that is displayed on the button
+     */
     private String Message = "";
+    /**
+     * relative position on the sceen 0,0 is top left 1,1 is bottom right
+     */
     private Vector relpos = Vector.One();
+    /**
+     * function wanted to be called when clicked on
+     */
     private HUDdelegate buttonDelegate;
 
-    /**
-     *
-     */
-    public Button() {
-        super();
-        UseTransforms(false);
-
-    }
 
     /**
      *
-     * @param Message
-     * @param Logic
-     */
-    public Button(String Message, HUDdelegate Logic) {
-        super();
-        this.Message = Message;
-        buttonDelegate = Logic;
-    }
-
-    /**
-     *
-     * @param relpos
-     * @param Message
-     * @param Logic
+     * @param relpos the position it will stay relative to the screen size
+     * @param Message the text that will be displayed on the center of the button
+     * @param Logic what runs when it is clicked
      */
     public Button(Vector relpos, String Message, HUDdelegate Logic) {
         super();
+        //sets local variables and loads a default image
         this.Message = Message;
         this.buttonDelegate = Logic;
         this.relpos = relpos;
@@ -65,11 +59,12 @@ public class Button extends IDrawable {
      */
     @Override
     public void init() {
-        setScale(new Vector(Game.ButtonDims()).mult((1 / Game.getWorldrelDims().getX())));
+        //sets the overall scale of the object (world scale is multiplyed by it so only needs to be set once
+        setScale(new Vector(Game.ButtonDims()));
     }
 
     /**
-     *
+     * contantly adjusts it position incase of a screen size chage
      */
     @Override
     public void doMove() {
@@ -77,17 +72,22 @@ public class Button extends IDrawable {
     }
 
     /**
-     *
-     * @param g
+     * dras default image and draws text ontop
+     * as well as a rectangle on top of the mouse is inside the button
      */
     @Override
     public void Update(Graphics2D g) {
+        //draws last image
         DrawLastLoadedImage(g);
+        //changes colour for the text
         g.setColor(new Color(255, 255, 255));
+        //changes font size
         Font f = g.getFont();
         g.setFont(f.deriveFont(f.getSize() * (1 / Game.getWorldrelDims().getX()) * 1.3f));
         FontMetrics metrics = g.getFontMetrics();
+        //draws the message centered to the button ( both x and y)
         g.drawString(Message, -metrics.stringWidth(Message) / 2, g.getFont().getSize() / 2);
+        //if mouse is hovering over draw a coloured rect
         if (isColliding()) {
             Color c = g.getColor();
             g.setColor(new Color(200, 200, 200, 100));
@@ -98,7 +98,7 @@ public class Button extends IDrawable {
     }
 
     /**
-     *
+     * this is where the delegate is running from
      */
     public void DoAction() {
         if (buttonDelegate != null) {
@@ -114,6 +114,7 @@ public class Button extends IDrawable {
      */
     @Override
     public void onCollison(IDrawable im) {
+        //if not a mouse then dont do anything with that collision
         if (!(im instanceof Mouse)) {
             setIsColliding(false);
         }
@@ -121,7 +122,7 @@ public class Button extends IDrawable {
 
     /**
      *
-     * @return
+     * @return the current message displayed on the button
      */
     public String getMessage() {
         return Message;
@@ -129,7 +130,7 @@ public class Button extends IDrawable {
 
     /**
      *
-     * @param Message
+     * @param Message sets the current message displayed on the button
      */
     public void setMessage(String Message) {
         this.Message = Message;

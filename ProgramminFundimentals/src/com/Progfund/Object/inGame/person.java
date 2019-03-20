@@ -14,8 +14,8 @@ import java.awt.Graphics2D;
 
 /**
  * this is a random person they just try to run away from the player
- * 
- * 
+ *
+ *
  * @author Liam Woolley 1748910
  */
 public class person extends IDestroyable {
@@ -29,11 +29,13 @@ public class person extends IDestroyable {
         super(health);
         setScoreToAdd(score);
     }
+
     @Override
-    public void init() {}
+    public void init() {
+    }
 
     /**
-     *
+     * moving and deleting(culling) the object when not needed
      */
     @Override
     public void doMove() {
@@ -60,8 +62,7 @@ public class person extends IDestroyable {
             IDestroyableManager.remove(this);
             Level().RemoveObject(this);
             return;
-        } 
-        //else rotate away from player
+        } //else rotate away from player
         else {
             Vector relpos = new Vector(getPosition()).mult(1).add(new Vector(Transform.getOffsetTranslation()).mult(1).add(new Vector(Game.getScaledWidth() / 2, Game.getScaledHeight() / 2).mult(-1)));
             setRotation(Math.atan2(relpos.getY(), relpos.getX()) + Math.PI / 2);
@@ -86,6 +87,11 @@ public class person extends IDestroyable {
     }
 
     @Override
-    public void onCollison(IDrawable id) {}
+    public void onCollison(IDrawable id) {
+        //moves the player away from this
+        if (id instanceof Player) {
+            id.addPosition(new Vector(new Vector(GetUp()).mult(-30)).mult(Level().getDelta()));
+        }
+    }
 
 }

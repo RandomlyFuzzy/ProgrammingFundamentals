@@ -14,46 +14,38 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
 /**
- *
+ * this is the mouse I considered using the OS mouse and checking bounds but 
+ * I had this already set up and needed less world to do this than that
  * @author Liam Woolley 1748910
  */
 public class Mouse extends IDrawable {
 
+    /**
+     * local variable to limit the amount of times it can do a button action per click to 1
+     */
     private boolean clicked = false;
 
-    /**
-     *
-     */
-    public Mouse() {
-        super();
-    }
 
     /**
      *
      */
     @Override
     public void init() {
+        //sets on the screen always relative to the screen but still can interact with the world if moved
         setPosition(new Vector(Level().getMousePos()).mult(new Vector(1f / Game.WorldScale().getX(), 1f / Game.WorldScale().getX())).add(new Vector(Transform.getOffsetTranslation()).mult(-1)));
+        //sets default images
         GetSprite("/Images/Cursor.png");
     }
-    float ind = 0;
 
     /**
      *
      */
     @Override
     public void doMove() {
-//        Rad += Game.g.getDelta() * 100;
-        if (Level().isClicking()) {
-            ind = 1f;
-            ind = ind % 2;
-        } else {
-            ind = 0;
-        }
-
-//        setScale(new Vector(Game.ButtonDims()).mult(1.5f));
+       
+        //sets on the screen always relative to the screen but still can interact with the world if moved
         setPosition(new Vector(Level().getMousePos()).mult(new Vector(1f / Game.WorldScale().getX(), 1f / Game.WorldScale().getX())).add(new Vector(Transform.getOffsetTranslation()).mult(-1)));
-//        setRotation(Rad);
+        //locking toggle so it limits it to 1 press per toggle
         clicked = clicked != !Level().isClicking() && clicked;
     }
 
@@ -63,7 +55,7 @@ public class Mouse extends IDrawable {
      */
     @Override
     public void Update(Graphics2D g) {
-//        GetSprite("/Images/cursor_" + (int) ind + ".png");
+        //draws the cursor
         DrawLastLoadedImage(g);
     }
 
@@ -76,7 +68,7 @@ public class Mouse extends IDrawable {
         if (im == null) {
             return;
         }
-
+        //interacts with UI
         if (im instanceof Button && Level().isClicking() && !clicked) {
             clicked = true;
             ((Button) im).DoAction();

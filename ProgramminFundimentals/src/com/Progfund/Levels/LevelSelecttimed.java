@@ -35,9 +35,9 @@ public class LevelSelecttimed extends ILevel {
     }
 
     /**
-     * times matrix for all the levels
+     * TIMES matrix for all the levels
      */
-    private static final float[] times = {
+    private static final float[] TIMES = {
         300,
         240,
         240,
@@ -68,7 +68,7 @@ public class LevelSelecttimed extends ILevel {
     public static void LoadLevelFromID(int i) {
         int[][] values = LevelSelect.getValues();
         System.out.println("com.Progfund.Levels.LevelSelect.LoadLevelFromID()");
-        Game.SetLevelActive(new timedLevel(values[i][0], values[i][1], values[i][2], values[i][3],times[i], i+1));
+        Game.SetLevelActive(new timedLevel(values[i][0], values[i][1], values[i][2], values[i][3],TIMES[i], i+1));
     }
 
     /**

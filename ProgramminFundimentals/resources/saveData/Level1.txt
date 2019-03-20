@@ -1,5 +1,5 @@
-score:2080
-got a score:0
-__:0
-_y_a_y_:1940
 boop:2440
+score:2080
+_y_a_y_:1940
+test:0
+__:0

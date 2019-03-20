@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.Progfund.Object.inGame.gunComponents;
 
 import com.Liamengine.Engine.AbstractClasses.IDrawable;
@@ -12,21 +8,33 @@ import com.Progfund.Object.inGame.Bullet;
 
 /**
  *
- * @author RandomlyFuzzy
+ * @see #Gun
+ * @author Liam Woolley
  */
 public class shotgun extends Gun{
 
-    public int Damage = 1;
-    
+    /**
+     *   the default damage
+     */
+    private int Damage = 1;
+    /**
+     * constuctor
+     * main sets damage and inital values of when this is made
+     */
     public shotgun(IDrawable parent, float delay,int damage) {
         super(parent, delay);
         this.Damage = damage;
     }
 
+    /**
+     * what creates the bullets to be fired 
+     * @see #Gun
+     */
     @Override
-    void WhatToFire(ILevel Level,Vector pos, double rotation) {
+    public void WhatToFire(ILevel Level,Vector pos, double rotation) {
+        Level.AddObject(new Bullet(new Vector(pos), rotation-Math.PI/10, this.Damage));
         Level.AddObject(new Bullet(new Vector(pos), rotation, this.Damage));
-        Level.AddObject(new Bullet(new Vector(pos), rotation, this.Damage));
+        Level.AddObject(new Bullet(new Vector(pos), rotation+Math.PI/10, this.Damage));
     }
     
 }

@@ -32,7 +32,7 @@ public class Leaderboard extends ILevel {
     /**
      * used to compair to currently checking leaderboard value
      */
-    private String previousind = "";
+    private String previousind = "1";
     /**
      * currently checking file trimed
      */
@@ -209,8 +209,8 @@ public class Leaderboard extends ILevel {
      */
     public void dispose() {
         super.dispose();
-        Currentind = "Level2Solo";
-        previousind = "Level1Solo";
+        Currentind = "";
+        previousind = "Level1";
         times = new ArrayList<String>();
     }
 

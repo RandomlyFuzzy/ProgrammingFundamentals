@@ -32,18 +32,30 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
+ * handles all the saving of games if won and this is only ran once the level
+ * has ended
  *
  * @author Liam Woolley 1748910
  */
 public class LevelOverOverlay extends IDrawable {
 
+    /**
+     * if this is up then stop everything else
+     */
     private static boolean finished = false;
+    /**
+     * stop entrys from being saved 2 times to a file 1 way toggle on the save
+     * button
+     */
     private static boolean saved = false;
+    /**
+     * the button that saves things just used to change its value later
+     */
     private static Button saveButton;
 
     /**
      *
-     * @return
+     * @return the current levels save button
      */
     public static Button getSaveButton() {
         return saveButton;
@@ -51,7 +63,7 @@ public class LevelOverOverlay extends IDrawable {
 
     /**
      *
-     * @return
+     * @return whether or not the level has ended
      */
     public static boolean isFinished() {
         return finished;
@@ -59,16 +71,15 @@ public class LevelOverOverlay extends IDrawable {
 
     /**
      *
-     * @param finished
+     * @param finished this sets the level finished
      */
     public static void setFinished(boolean finished) {
-        UtilManager.FindUseClass(5);
         LevelOverOverlay.finished = finished;
     }
 
     /**
      *
-     * @return
+     * @return whether or not the save on the save popup has been pressed
      */
     public static boolean hassaved() {
         return saved;
@@ -76,58 +87,73 @@ public class LevelOverOverlay extends IDrawable {
 
     /**
      *
-     * @param saved
+     * @param saved sets whether or not this has been saved once
      */
     public static void setsaved(boolean saved) {
         LevelOverOverlay.saved = saved;
     }
 
     /**
-     *
+     * where all the logic is
      */
     @Override
     public void init() {
+        //stops game
         setFinished(true);
+        //makes things not collide with it just in case
         setIsCollidable(false);
+        //lock its position to only the screen
         UseTransforms(false);
+
+        // to the same level
         Level().AddObject(new Button(new Vector(0.25f, 0.8f), "replay", new HUDdelegate() {
             public void OnClick(Button b) {
-                LevelSelect.LoadLevelFromID(Level.GetLevel());
-                System.out.println(".OnClick()");
+                LevelSelect.LoadLevelFromID(Level.GetLevel() - 1);
             }
         }));
+        //if the required points habe been achieved
         if (Player.getScoreNeeded() < Player.getPlayerScore()) {
+            //make it so the player can save their score
             saveButton = new Button(new Vector(0.5f, 0.8f), "save score", new HUDdelegate() {
                 public void OnClick(Button b) {
+                    //do nothing if already saved
                     if (LevelOverOverlay.hassaved()) {
                         return;
                     }
 
+                    //creates the pop-up with lable textarea and button
                     JButton button = new JButton("click me");
                     JTextField text = new JTextField("Please enter your save name");
                     JLabel lable = new JLabel("Please input name");
                     JFrame frame = new JFrame();
                     JPanel panel = new JPanel();
 
+                    //saves when the button is pressed
                     button.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+
                             frame.setVisible(false);
                             if (text.getText().trim().equals("Please enter your save name")) {
                                 return;
                             }
 
-                            String file = "Level"+Level.GetLevel();
+                            String file = "Level" + Level.GetLevel();
                             System.out.println(text.getText().trim());
                             LevelOverOverlay.setsaved(true);
                             LevelOverOverlay.getSaveButton().setMessage("Saved as " + text.getText().trim());
-                            FileUtils.AppendToFile("resources/saveData/" + file + ".txt", 
-                                    text.getText().trim().replaceAll(":", "_")+ 
-                                    ((Level()instanceof timedLevel)?"(t)":"") + ":" + Player.getPlayerScore() + "\n");
+                            FileUtils.AppendToFile("resources/saveData/" + file + ".txt",
+                                    text.getText().trim().replaceAll(":", "_")
+                                    + ((Level() instanceof timedLevel) ? "(t)" : "") + ":" + Player.getPlayerScore() + "\n");
+
+                            frame.dispose();
                         }
                     });
-
+                    //gets rid of top bar
+                    frame.setUndecorated(true);
+                    //makes inside the screen
                     frame.setBounds(Game.GetFrame().getX() + (int) (Game.GetFrame().getWidth() * 0.4f), Game.GetFrame().getY() + (int) (Game.GetFrame().getHeight() * 0.45f), Game.GetFrame().getWidth(), Game.GetFrame().getHeight());
+                    //adds (j)components
                     panel.add(lable);
                     panel.add(text);
                     panel.add(button);
@@ -136,13 +162,16 @@ public class LevelOverOverlay extends IDrawable {
                     frame.setVisible(true);
                 }
             });
+            //adds save button to screen
             Level().AddObject(saveButton);
         }
+        //to main menu
         Level().AddObject(new Button(new Vector(0.75f, 0.8f), "Mainmenu", new HUDdelegate() {
             public void OnClick(Button b) {
                 LevelLoader.LoadLevel(Game.getDefualtLevel());
             }
         }));
+        //creates mouse
         Level().AddObject(new Mouse()).setScale(new Vector(4, 4));
     }
 
@@ -155,7 +184,7 @@ public class LevelOverOverlay extends IDrawable {
 
     /**
      *
-     * @param gd
+     * @param gd draws the background box and whether or nothe player has won the game
      */
     @Override
     public void Update(Graphics2D gd) {

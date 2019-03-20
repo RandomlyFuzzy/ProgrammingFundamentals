@@ -12,30 +12,21 @@ import com.Liamengine.Engine.Utils.LevelLoader;
 import com.Liamengine.Engine.Utils.MusicUtils;
 import com.Liamengine.Engine.Utils.imageUtils;
 import com.Progfund.Object.Menu.*;
-import com.sun.imageio.plugins.common.ImageUtil;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sound.sampled.Clip;
 
 /**
- * first menu level in the game 
- * 
- * 
+ * first menu level in the game
+ *
+ *
  * @author Liam Woolley 1748910
  */
 public class MainMenu extends ILevel {
 
-    BufferedImage bg;
+    private BufferedImage bg;
 
     /**
      * contrcuctor set music to coninue when loaded
@@ -45,7 +36,7 @@ public class MainMenu extends ILevel {
     }
 
     /**
-     * 
+     *
      */
     @Override
     public void init() {
@@ -55,31 +46,37 @@ public class MainMenu extends ILevel {
         //background colour
         setBackground(Color.BLACK);
         //to levelselect
-        AddObject(new Button(new Vector(0.125f, 0.27f), "Play Level", new HUDdelegate() {
-            public void OnClick(Button b) {
-                LevelLoader.LoadLevel(new LevelSelect());//new com.Progfund.Levels.Level(1000,3,20,300));
-            }
-        }));
+        AddObject(
+                new Button(new Vector(0.125f, 0.27f), "Play Level", new HUDdelegate() {
+                    @Override
+                    public void OnClick(Button b) {
+                        LevelLoader.LoadLevel(new LevelSelect());
+                    }
+                }));
         //to levelselecttimed
         AddObject(new Button(new Vector(0.125f, 0.40f), "Time Trials", new HUDdelegate() {
+            @Override
             public void OnClick(Button b) {
-                LevelLoader.LoadLevel(new LevelSelecttimed());//new com.Progfund.Levels.Level(1000,3,20,300));
+                LevelLoader.LoadLevel(new LevelSelecttimed());
             }
         }));
         //to leaderboard
         AddObject(new Button(new Vector(0.125f, 0.53f), "LeaderBoard", new HUDdelegate() {
+            @Override
             public void OnClick(Button b) {
                 LevelLoader.LoadLevel(new Leaderboard());
             }
         }));
         //exit out the game
         AddObject(new Button(new Vector(0.125f, 0.66f), "Exit", new HUDdelegate() {
+            @Override
             public void OnClick(Button b) {
                 System.exit(0);
             }
         }));
         // turns music on and off
         AddObject(new toggle(new Vector(0.95f, 0.88f), new HUDdelegate() {
+            @Override
             public void OnClick(toggle b) {
                 MusicUtils.SetVolume(b.IsTicked() ? 1 : 0);
             }
@@ -106,12 +103,12 @@ public class MainMenu extends ILevel {
      * @param ae
      */
     @Override
-    public void Update(ActionEvent ae) { }
+    public void Update(ActionEvent ae) {
+    }
 
     /**
      *
-     * @param gd graphical context
-     * just draws image
+     * @param gd graphical context just draws image
      */
     @Override
     public void Draw(Graphics2D gd) {

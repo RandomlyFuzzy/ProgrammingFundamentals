@@ -23,16 +23,15 @@ import java.awt.Graphics2D;
  */
 public class Enemy extends IDestroyable {
 
-
     /**
      * this is magnitude speed of the movement vector
      */
-    private float speed = 140;
-    
+    private float speed = 85;
+
     /**
      * this is the gun that shoots bullets
      */
-    private Gun gun = new Pistol(this,0.3f, 12);
+    private Gun gun = new Pistol(this, 0.3f, 12);
 
     /**
      *
@@ -115,6 +114,10 @@ public class Enemy extends IDestroyable {
      */
     @Override
     public void onCollison(IDrawable id) {
+        //moves the player away from this
+        if (id instanceof Player) {
+            id.addPosition(new Vector(new Vector(GetUp()).mult(speed)).mult(Level().getDelta()));
+        }
     }
 
 }

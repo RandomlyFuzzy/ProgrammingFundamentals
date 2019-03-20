@@ -135,8 +135,7 @@ public abstract class IDestroyable extends IDrawable {
      */
     public void SetHashParams() {
         refs[0] = getPosition();
-        refs[1] = new Vector(getMaxHealth());
-        refHash = HashUtils.hash(getHashVecs()[0], getHashVecs()[1]);
+        refHash = HashUtils.hash(getHashVecs()[0]);
     }
 
     /**

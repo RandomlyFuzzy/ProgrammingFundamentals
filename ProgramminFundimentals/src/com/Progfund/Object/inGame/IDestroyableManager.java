@@ -53,9 +53,9 @@ public class IDestroyableManager {
     * @param b a vector for the hash
     * @return true if not found false if found 
      */
-    public static boolean willBeUnique(Vector a, Vector b) {
+    public static boolean willBeUnique(Vector a) {
         for (IDestroyable id : destroyableObjs) {
-            if (id.getRefHash() == HashUtils.hash(a, b)) {
+            if (id.getRefHash() == HashUtils.hash(a)) {
                 return false;
             }
         }

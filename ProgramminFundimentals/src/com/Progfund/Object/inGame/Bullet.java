@@ -19,7 +19,10 @@ import java.awt.Graphics2D;
  */
 public class Bullet extends IDrawable {
 
-    private Vector Acc;
+    /**
+     * the amount added to the position each tim
+     */
+    private Vector Velocity;
     private int damage = 0;
 
     /**
@@ -37,7 +40,7 @@ public class Bullet extends IDrawable {
         //scales the bullet to be more visable
         setScale(new Vector(3, 2));
         //set the position added increment
-        this.Acc = new Vector((float) rot).mult(600);
+        this.Velocity = new Vector((float) rot).mult(600);
         //set the damage that is delt upon hit
         this.damage = Damage;
     }
@@ -60,7 +63,7 @@ public class Bullet extends IDrawable {
                 && (-Transform.getOffsetTranslation().getX() + (Game.getWindowWidth() * 2)) > getPosition().getX()
                 && (-Transform.getOffsetTranslation().getY() - (Game.getWindowHeight())) < getPosition().getY()
                 && (-Transform.getOffsetTranslation().getY() + (Game.getWindowHeight() * 2)) > getPosition().getY()))) {
-            addPosition(new Vector(Acc).mult(Game.getDelta()));
+            addPosition(new Vector(Velocity).mult(Game.getDelta()));
         } else {
             Level().RemoveObject(this);
         }

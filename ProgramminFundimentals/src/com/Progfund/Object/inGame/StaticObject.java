@@ -14,25 +14,30 @@ import java.awt.Graphics2D;
 
 /**
  *
+ * this is for the objects that are around the world like cars and bins 
+ * these will not move so all that need to chenge is health and the image
+ * (can be done externaly to this object)
+ * 
  * @author Liam Woolley 1748910
  */
-public class RandomObject extends IDestroyable {
+public class StaticObject extends IDestroyable {
 
 
     /**
-     *
+     * hooks into the basic constructor
+     * can be used for object that block the player
      * @param StartingHealth
      */
-    public RandomObject(int StartingHealth) {
+    public StaticObject(int StartingHealth) {
         super(StartingHealth);
     }
 
     /**
-     *
+     * this is a object that give the player some points
      * @param StartingHealth
      * @param points
      */
-    public RandomObject(int StartingHealth,int points) {
+    public StaticObject(int StartingHealth,int points) {
         super(StartingHealth);
         setScoreToAdd(points);
     }
@@ -41,13 +46,14 @@ public class RandomObject extends IDestroyable {
     public void init() {}
 
     /**
-     *
+     * same thing in all the other object that are spawned in the level (bounds checking and self culling)
      */
     @Override
     public void doMove() {
         if (LevelOverOverlay.isFinished()) {
             Level().RemoveObject(this);
             IDestroyableManager.remove(this);
+            return;
         }
 
         if (getHealth() <= 0) {

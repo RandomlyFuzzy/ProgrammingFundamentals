@@ -10,6 +10,9 @@ import com.Progfund.Object.inGame.IDestroyable;
 
 /**
  *
+ * this is used to generate unique hashs for each possable point on the screen
+ * (it doesnt do every place as a different hash but is close enough to be usable by the game)
+ * 
  * @author Liam Woolley 1748910
  */
 public class HashUtils {
@@ -17,31 +20,19 @@ public class HashUtils {
     
     
     
-    /*
-    * this is just simle bitwise hashing function nothing fancy
-    * just uses position and uses a direction vector using health 
-    * to obtain fairly unique identifier for each object that can be 
-    * checked to see if an object is similar upon spawn 
-    * @param id 
-    */
-
     /**
-     *
-     * @param a
-     * @param b
-     * @return
+     * this is just simle bitwise hashing function nothing fancy
+     * just uses position to obtain fairly unique identifier for 
+     * each object that can be checked to see if an object is 
+     * similar upon spawn 
+     * @param a vector a oftern the position
+     * @return a simi-unique hash
      */
-
-    public static int hash(Vector a,Vector b){
-        int a0 = (int)(a.getX()*10000f);
-        int a1 = (int)(a.getY()*10000f);
-        int a2 = (int)(b.getX()*10000f);
-        int a3 = (int)(b.getY()*10000f);
-        int a4 = a1|a3;
-        int a5 = a0|a2;
-        int a6 = ((((((a4^a5)&a0)&a1)&a2)&a3)&a4);
+    public static int hash(Vector a){
+        //scaling to a certain point too much and it will just remove the firs bytes of the int and make it cycle more oftern
+        int a0 = (int)(a.getX()*1000000f);
+        int a1 = (int)(a.getY()*1000000f);
                
-
         int hash = a0^a1;
         return hash;
     }
