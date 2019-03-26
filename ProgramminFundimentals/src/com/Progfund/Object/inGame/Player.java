@@ -36,14 +36,6 @@ public class Player extends IDestroyable {
      */
     private Vector speed = new Vector(150, 200);
     /**
-     * Left Right Axis reference
-     */
-    private int horizontal = 0;
-    /**
-     * Up Down Axis reference
-     */
-    private int vertical = 0;
-    /**
      * damage the bullets do
      */
     private int damage = 25;
@@ -63,6 +55,11 @@ public class Player extends IDestroyable {
      * the shotgun that fires a 3 bullets at a time
      */
     private Gun shotgun = new shotgun(this, 0.3f, damage);
+
+    /**
+     * handles the up down left and right keys being pressed / released
+     */
+    private boolean[] Dirs = new boolean[4];
 
     /**
      *
@@ -90,16 +87,56 @@ public class Player extends IDestroyable {
      *
      * @param val vertical axis set
      */
-    public void SetVerticalDir(int val) {
-        vertical = val;
+    public void SetVerticalDirActive(int val) {
+        if (val == 1) {
+            Dirs[0] = true;
+        }
+
+        if (val == -1) {
+            Dirs[1] = true;
+        }
     }
 
     /**
      *
-     * @param val horrizontal axis set
+     * @param val horizontal axis set
      */
-    public void SetHorizontalDir(int val) {
-        horizontal = val;
+    public void SetHorizontalDirActive(int val) {
+        if (val == 1) {
+            Dirs[2] = true;
+        }
+
+        if (val == -1) {
+            Dirs[3] = true;
+        }
+    }
+
+    /**
+     *
+     * @param val vertical axis unset
+     */
+    public void SetVerticalDirUnactive(int val) {
+        if (val == 1) {
+            Dirs[0] = false;
+        }
+
+        if (val == -1) {
+            Dirs[1] = false;
+        }
+    }
+
+    /**
+     *
+     * @param val horizontal axis unset
+     */
+    public void SetHorizontalDirUnactive(int val) {
+        if (val == 1) {
+            Dirs[2] = false;
+        }
+
+        if (val == -1) {
+            Dirs[3] = false;
+        }
     }
 
     /**
@@ -137,6 +174,10 @@ public class Player extends IDestroyable {
             Vector relpos = new Vector(Level().getMousePos()).add(new Vector(Game.getWindowWidth() / -2, Game.getWindowHeight() / -2));
             //sets the rotation from that vector
             setRotation(Math.atan2(relpos.getX(), -relpos.getY()));
+
+            //decides what directions should be taken
+            int vertical = Dirs[0] == Dirs[1] ? 0 : Dirs[0] ? 1 : Dirs[1] ? -1 : 0;
+            int horizontal = Dirs[2] == Dirs[3] ? 0 : Dirs[2] ? 1 : Dirs[3] ? -1 : 0;
             //adds to the player current postion (Movement of player)
             addPosition(
                     //gets the relative up vector and scales apprioratly
@@ -144,9 +185,9 @@ public class Player extends IDestroyable {
                             .mult(vertical * speed.getY() * 2f)
                             //adds the right vector
                             .add(
-                            new Vector(1, 0)
-                            //scales apprioratly
-                            .mult(-horizontal * speed.getX() * 2f)))
+                                    new Vector(1, 0)
+                                            //scales apprioratly
+                                            .mult(-horizontal * speed.getX() * 2f)))
                             //scales by the game speed so it stays constant move rate
                             .mult(Game.getDelta()));
 
@@ -169,6 +210,7 @@ public class Player extends IDestroyable {
             if (getHealth() <= 0) {
                 //adds the hud for when the game ends
                 Level().AddObject(new LevelOverOverlay()).setIsCollidable(false);
+                Level().play("/music/Hit_Hurt.wav");
             }
         }
 
@@ -200,6 +242,9 @@ public class Player extends IDestroyable {
                         .mult(new Vector(id.getScaledSpriteWidth(), id.getScaledSpriteHeight()))
                         .Normalized()
                         .mult((float) new Vector(id.getSpriteWidth(), id.getSpriteHeight()).Lengthsqrt());
+        //decides what directions should be taken
+        int vertical = Dirs[0] == Dirs[1] ? 0 : Dirs[0] ? 1 : Dirs[1] ? -1 : 0;
+        int horizontal = Dirs[2] == Dirs[3] ? 0 : Dirs[2] ? 1 : Dirs[3] ? -1 : 0;
         //reversing the direction moving vector to push out
         relpos.add(
                 new Vector(new Vector(0, -1)

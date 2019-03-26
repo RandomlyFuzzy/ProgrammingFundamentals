@@ -10,10 +10,7 @@ import com.Liamengine.Engine.Components.Vector;
 import com.Liamengine.Engine.Entry.Game;
 import com.Liamengine.Engine.Utils.FileUtils;
 import com.Progfund.Object.Menu.*;
-import com.Progfund.Object.inGame.LevelGenerator;
-import com.Progfund.Object.inGame.Player;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -22,8 +19,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
- * Leaderboard scene of the game
- *
+ * Leaderboard scene of the game Displays the top 5 scores as per the brief
  *
  * @author Liam Woolley 1748910
  */
@@ -75,7 +71,7 @@ public class Leaderboard extends ILevel {
     @Override
     public void init() {
         // for the background
-        GetSprite("/Images/backgrounds/background1.png");
+//        GetSprite("/Images/backgrounds/background1.png");
 
         //creates a seachable button for each level
         for (int i = 0; i < 20; i++) {
@@ -155,18 +151,18 @@ public class Leaderboard extends ILevel {
     @Override
     public void Draw(Graphics2D g) {
         //g.drawImage(GetSprite("/Images/backgrounds/background1.png"), Game.getWindowWidth(), 0, (Game.getWindowWidth() * -1), (Game.getWindowHeight()), null);
-        //keeps the current font
+        //keeps the current font for later as is a relative to the screen scale(world scale)
         Font f = g.getFont();
-        //create a scaled font
+        //create a scaled font 
         Font f2 = f.deriveFont(1, Game.WorldScale().getY() * 13);
         g.setFont(f2);
         g.setColor(new Color(55, 55, 55, 150));
-        g.setFont(f.deriveFont(1, f.getSize() + (Game.WorldScale().getY() * ((int) Math.pow(15 - 0, 2) / 10))));
+        g.setFont(f.deriveFont(1, f.getSize() * (Game.WorldScale().getY() / (1f / ((int) Math.pow((15 ) + 1, 2) / 100f)))));
         //if their are times
         int w = (int) (g.getFontMetrics().stringWidth(Currentind) * 1.05f);
         g.drawString(Currentind, (Game.getWindowWidth() / 2 - (w / 2)), (0.23f) * Game.getWindowHeight());
+        //only draws if theirs is data and the first piece of data is not empty
         if (times.size() != 0 && !times.get(0).equals(new String())) {
-
             //get the size of the firs entry(the biggest one)
             String s = times.get(0);
             String[] split = s.split(":");
@@ -174,7 +170,7 @@ public class Leaderboard extends ILevel {
             w = (int) (g.getFontMetrics().stringWidth(str) * 1.05f);
             //create the rectangle to that dimentions scaled to the amount of entrys
             g.fillRect(
-                    (int) ((Game.getWindowWidth() / 2) - w / 2),
+                    (int) ((Game.getWindowWidth() / 2) - (w / 2)),
                     (int) ((0.255f) * Game.getWindowHeight()),
                     (int) (w),
                     (int) (0.12f * Game.getWindowHeight() * (times.size() >= 5 ? 5 : times.size())));
@@ -183,12 +179,14 @@ public class Leaderboard extends ILevel {
             g.setColor(Color.WHITE);
             //draw all the entrys found/saved at verying sizes
             for (int i = 0; i < (times.size() >= 5 ? 5 : times.size()); i++) {
-                //have to scale the text manually
-                g.setFont(f.deriveFont(1, f.getSize() + (Game.WorldScale().getY() * ((int) Math.pow((15 - i*3)+1, 2) / 10))));
+                //have to scale the text with the equation (((15-(3i))+1)^2)/2 (all while keeping the scale realative to the screen size) look at ILevel.paintComponent for how the original scale is set
+                g.setFont(f.deriveFont(1, f.getSize() * 2.5f * ((float)Game.WorldScale().getY() / (i+1))));
                 s = times.get(i);
                 split = s.split(":");
                 str = "No " + (i + 1) + " Place is " + split[0] + " with " + split[1] + " score";
+                //gets the string width to center it 
                 w = g.getFontMetrics().stringWidth(str);
+                //draws the times in assending order moving down each time a set amount (could have added the font size each time but no need
                 g.drawString(str,
                         Game.getWindowWidth() / 2 - w / 2,
                         (((i % 20) * 0.12f) + 0.33f) * Game.getWindowHeight());
@@ -210,9 +208,13 @@ public class Leaderboard extends ILevel {
      */
     public void dispose() {
         super.dispose();
-        Currentind = "";
-        previousind = "Level1";
+        Currentind = "Level1";
+        previousind = "1";
         times = new ArrayList<String>();
+    }
+
+    @Override
+    public void keytyped(KeyEvent ke) {
     }
 
 }

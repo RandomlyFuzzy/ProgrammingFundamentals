@@ -14,18 +14,18 @@ import java.awt.Graphics2D;
 
 /**
  *
- * this is for the objects that are around the world like cars and bins 
- * these will not move so all that need to chenge is health and the image
- * (can be done externaly to this object)
- * 
+ * this is for the objects that are around the world like cars and bins these
+ * will not move so all that need to chenge is health and the image (can be done
+ * externaly to this object)
+ *
  * @author Liam Woolley 1748910
  */
 public class StaticObject extends IDestroyable {
 
-
     /**
-     * hooks into the basic constructor
-     * can be used for object that block the player
+     * hooks into the basic constructor can be used for object that block the
+     * player
+     *
      * @param StartingHealth
      */
     public StaticObject(int StartingHealth) {
@@ -34,19 +34,22 @@ public class StaticObject extends IDestroyable {
 
     /**
      * this is a object that give the player some points
+     *
      * @param StartingHealth
      * @param points
      */
-    public StaticObject(int StartingHealth,int points) {
+    public StaticObject(int StartingHealth, int points) {
         super(StartingHealth);
         setScoreToAdd(points);
     }
 
     @Override
-    public void init() {}
+    public void init() {
+    }
 
     /**
-     * same thing in all the other object that are spawned in the level (bounds checking and self culling)
+     * same thing in all the other object that are spawned in the level (bounds
+     * checking and self culling)
      */
     @Override
     public void doMove() {
@@ -61,6 +64,7 @@ public class StaticObject extends IDestroyable {
             Player.addScore(getScore());
             Level().RemoveObject(this);
             ParticalGenerator.add(this);
+            Level().play("/music/Hit_Hurt.wav");
             return;
         }
         if (!((-Transform.getOffsetTranslation().getX() - (Game.getScaledWidth()) < getPosition().getX()

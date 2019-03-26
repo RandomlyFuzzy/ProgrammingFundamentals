@@ -18,7 +18,7 @@ import java.awt.Toolkit;
 /**
  *
  * this is similar to a button but changes its state each time it is clicked
- * 
+ *
  * @author Liam Woolley 1748910
  */
 public class toggle extends IDrawable {
@@ -26,7 +26,7 @@ public class toggle extends IDrawable {
     /**
      * current state of the toggle
      */
-    private boolean isTicked = false;
+    private boolean isTicked = true;
     /**
      * relative position on the sceen 0,0 is top left 1,1 is bottom right
      */
@@ -35,7 +35,6 @@ public class toggle extends IDrawable {
      * function wanted to be called when clicked on
      */
     private HUDdelegate buttonDelegate;
-
 
     /**
      *
@@ -46,11 +45,12 @@ public class toggle extends IDrawable {
         super();
         this.buttonDelegate = Logic;
         this.relpos = relpos;
+        DoAction();
         GetSprite("/images/toggle" + (isTicked ? "On" : "Off") + ".png");
     }
 
     /**
-     * set its 
+     * set its
      */
     @Override
     public void init() {
@@ -74,9 +74,10 @@ public class toggle extends IDrawable {
     public void Update(Graphics2D g) {
         //draws current state image
         DrawLastLoadedImage(g);
-        //if hovering show a rect on top
+        //if hovering show a transparent circle on top
         if (isColliding()) {
             Color c = g.getColor();
+            //transparent grey
             g.setColor(new Color(200, 200, 200, 100));
             g.fillOval(-getSpriteWidth() / 2, -getSpriteHeight() / 2, getSpriteWidth(), getSpriteHeight());
             g.setColor(c);

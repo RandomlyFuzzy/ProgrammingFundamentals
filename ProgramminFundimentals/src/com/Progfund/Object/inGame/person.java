@@ -51,6 +51,7 @@ public class person extends IDestroyable {
             Player.addScore(getScore());
             Level().RemoveObject(this);
             ParticalGenerator.add(this);
+            Level().play("/music/Hit_Hurt.wav");
             return;
         }
         //if outside the screen bounds *3

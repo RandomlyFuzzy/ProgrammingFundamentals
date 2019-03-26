@@ -17,6 +17,7 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import javax.sound.sampled.Clip;
 
 /**
  * first menu level in the game
@@ -75,26 +76,32 @@ public class MainMenu extends ILevel {
             }
         }));
         // turns music on and off
-        AddObject(new toggle(new Vector(0.95f, 0.88f), new HUDdelegate() {
+        toggle t = new toggle(new Vector(0.95f, 0.88f), new HUDdelegate() {
             @Override
             public void OnClick(toggle b) {
                 MusicUtils.SetVolume(b.IsTicked() ? 1 : 0);
             }
-        }));
+        });
+        if (MusicUtils.GetVolume() == 0) {
+            t.DoAction();
+        }
+
+        AddObject(t);
         //adds a mouse
         AddObject(new Mouse());
         //my take on asynrouse loading
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //trys to get the image from online
-                imageUtils.T.setImage("background", getOnlineImage("https://picsum.photos/1050/730/?random"));
-                //sets the displayed image to the loaded asset
-                bg = GetSprite("background");
+                //trys to get the image from online and puts it into a dictionary for later use
+                imageUtils.T.setImage("/background", getOnlineImage("https://picsum.photos/1050/730/?random"));
+                //gets the image and sets the displayed image to the loaded asset
+                bg = GetSprite("/background");
             }
         }).start();
+        MusicUtils.StopASounds("/music/LevelMusic.wav");
         //play music for ever (until stoped)
-//        play("/music/music.wav", 0, Clip.LOOP_CONTINUOUSLY);
+        play("/music/menuMusic.wav", 0, Clip.LOOP_CONTINUOUSLY);
 
     }
 
@@ -112,8 +119,8 @@ public class MainMenu extends ILevel {
      */
     @Override
     public void Draw(Graphics2D gd) {
-        //does not like checking to see if it is equal to null
-        if (imageUtils.T.GetImage("background") == bg) {
+        //checking a nullref against an imagenullref then when the bg is gotten they equal each other
+        if (bg != null) {
             try {
                 gd.drawImage(bg, (int) (Game.getWindowWidth() * 0.25f), (int) (Game.getWindowHeight() * 0.03f), (int) (bg.getWidth() * Game.WorldScale().getX()), (int) (bg.getHeight() * Game.WorldScale().getY()), null);
             } catch (Exception e) {

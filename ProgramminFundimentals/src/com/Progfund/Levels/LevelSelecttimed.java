@@ -96,7 +96,7 @@ public class LevelSelecttimed extends ILevel {
         //add a mouse 
         AddObject(new Mouse());
         //sets background 
-        setBackgroundimage(GetSprite("/Images/backgrounds/background1.png"));
+//        setBackgroundimage(GetSprite("/Images/backgrounds/background1.png"));
     }
 
     /**

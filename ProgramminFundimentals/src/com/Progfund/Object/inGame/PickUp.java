@@ -43,7 +43,7 @@ public class PickUp extends IDestroyable {
      */
     @Override
     public void doMove() {
-        //keeps it alive
+        //keeps it "alive" 
         if(this.getHealth() != this.getMaxHealth()){
             this.setHealth(this.getMaxHealth());
         }
@@ -87,6 +87,7 @@ public class PickUp extends IDestroyable {
         ParticalGenerator.add(this);
         Level().RemoveObject(this);
         IDestroyableManager.remove(this);
+        Level().play("/music/Pickup_Coin.wav");
     }
 
 }

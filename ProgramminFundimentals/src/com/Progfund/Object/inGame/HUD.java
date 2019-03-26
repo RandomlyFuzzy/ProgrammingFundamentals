@@ -8,6 +8,7 @@ package com.Progfund.Object.inGame;
 import com.Liamengine.Engine.Entry.Game;
 import com.Liamengine.Engine.AbstractClasses.IDrawable;
 import com.Liamengine.Engine.Components.Vector;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
@@ -83,6 +84,7 @@ public class HUD extends IDrawable {
      */
     @Override
     public void Update(Graphics2D g) {
+        g.setColor(Color.red);
         //draws all the strings at the points specified
         for (int i = 0; i < texts.size(); i++) {
             g.drawString(this.texts.get(i), this.textsPos.get(i).getX(),this.textsPos.get(i).getY());

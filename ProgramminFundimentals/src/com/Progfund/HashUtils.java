@@ -19,20 +19,13 @@ public class HashUtils {
     
     
     /**
-     * this is just simpe bitwise hashing function nothing fancy
-     * just uses position to obtain fairly unique identifier for 
-     * each object that can be checked to see if an object is 
-     * similar upon spawn 
+     * this just adds 2 hashes together 
      * @param a vector a often the position
-     * @return a simi-unique hash
+     * @return the hash of the X component with the Y component added together
      */
     public static int hash(Vector a){
-        //scaling to a certain point too much and it will just remove the firs bytes of the int and make it cycle more oftern
-        int a0 = (int)(a.getX()*1000000f);
-        int a1 = (int)(a.getY()*1000000f);
-        //then they are XORed together
-        int hash = a0^a1;
-        return hash;
+
+        return Double.hashCode(a.getX())+Double.hashCode(a.getY());
     }
     
     

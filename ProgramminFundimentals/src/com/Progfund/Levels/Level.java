@@ -10,6 +10,7 @@ import com.Liamengine.Engine.Components.Vector;
 import com.Liamengine.Engine.Entry.Game;
 import com.Progfund.Object.Menu.*;
 import com.Progfund.Object.inGame.Bullet;
+import com.Progfund.Object.inGame.IDestroyableManager;
 import com.Progfund.Object.inGame.LevelGenerator;
 import com.Progfund.Object.inGame.OverLay;
 import com.Progfund.Object.inGame.ParticalGenerator;
@@ -88,6 +89,7 @@ public class Level extends ILevel {
      */
     @Override
     public void init() {
+        IDestroyableManager.Reset();
         Game.setWorldrelDims(new Vector(0.8f, 0.8f));
         AddObject(new LevelGenerator(rndSeed, Difficuly));
         p = new Player(playerHealth, ScoretoWin);
@@ -98,6 +100,7 @@ public class Level extends ILevel {
         m.setScale(new Vector(4, 4));
         AddObject(m).setIsCollidable(false);
         AddObject(new ParticalGenerator());
+        play("/music/LevelMusic.wav", 0, -1);
     }
 
     /**
@@ -123,24 +126,15 @@ public class Level extends ILevel {
         //this is all for the player movement
         int code = ke.getKeyCode();
         if (code == KeyEvent.VK_W) {
-            p.SetVerticalDir(1);
+            p.SetVerticalDirActive(1);
         } else if (code == KeyEvent.VK_S) {
-            p.SetVerticalDir(-1);
+            p.SetVerticalDirActive(-1);
         }
         if (code == KeyEvent.VK_A) {
-            p.SetHorizontalDir(1);
+            p.SetHorizontalDirActive(1);
         } else if (code == KeyEvent.VK_D) {
-            p.SetHorizontalDir(-1);
+            p.SetHorizontalDirActive(-1);
         }
-    }
-
-    /**
-     *
-     * @param ke the key that was pressed
-     */
-    @Override
-    public void keytyped(KeyEvent ke) {
-        keyPress(ke);
     }
 
     /**
@@ -151,11 +145,15 @@ public class Level extends ILevel {
     public void keyRelease(KeyEvent ke) {
         int code = ke.getKeyCode();
         //this is all for the player  movement
-        if (code == KeyEvent.VK_W || code == KeyEvent.VK_S) {
-            p.SetVerticalDir(0);
+        if (code == KeyEvent.VK_W) {
+            p.SetVerticalDirUnactive(1);
+        } else if (code == KeyEvent.VK_S) {
+            p.SetVerticalDirUnactive(-1);
         }
-        if (code == KeyEvent.VK_A || code == KeyEvent.VK_D) {
-            p.SetHorizontalDir(0);
+        if (code == KeyEvent.VK_A) {
+            p.SetHorizontalDirUnactive(1);
+        } else if (code == KeyEvent.VK_D) {
+            p.SetHorizontalDirUnactive(-1);
         }
     }
 

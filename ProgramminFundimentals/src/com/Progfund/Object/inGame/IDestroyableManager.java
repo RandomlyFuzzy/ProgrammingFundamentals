@@ -17,6 +17,9 @@ public class IDestroyableManager {
 
     private static ArrayList<IDestroyable> destroyableObjs = new ArrayList<IDestroyable>();
 
+    
+    
+    
     /**
      * resets the arraylist of objects 
      */
@@ -28,7 +31,13 @@ public class IDestroyableManager {
     * @return a instance of all currently created IDestroyables in the level
      */
     public static ArrayList<IDestroyable> getInstance() {
-        return new ArrayList<IDestroyable>(destroyableObjs);
+        ArrayList<IDestroyable> objs = new ArrayList<IDestroyable>();
+        for(IDestroyable d : destroyableObjs){
+            if(d != null){
+                objs.add(d);
+            }
+        }
+        return objs;
     }
 
     /**
@@ -40,7 +49,7 @@ public class IDestroyableManager {
     }
 
     /**
-     * removes and object from an arraylist
+     * removes and object from an collection
      * @param id
      */
     public static void remove(IDestroyable id) {

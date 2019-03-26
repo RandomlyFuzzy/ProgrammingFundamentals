@@ -9,12 +9,13 @@ import com.Liamengine.Engine.AbstractClasses.IDrawable;
 import com.Liamengine.Engine.Components.Transform;
 import com.Liamengine.Engine.Components.Vector;
 import com.Liamengine.Engine.Entry.Game;
+import com.Liamengine.Engine.Utils.MusicUtils;
 import com.Progfund.Levels.Level;
 import java.awt.Graphics2D;
 
 /**
  * bullet it damages IDestroyables
- * 
+ *
  * @author Liam Woolley 1748910
  */
 public class Bullet extends IDrawable {
@@ -26,7 +27,7 @@ public class Bullet extends IDrawable {
     private int damage = 0;
 
     /**
-     * @param start start position 
+     * @param start start position
      * @param rot start rotation
      * @param Damage bullet damage
      */
@@ -51,11 +52,13 @@ public class Bullet extends IDrawable {
     @Override
     public void init() {
         GetSprite("/images/bullet.png");
+        MusicUtils.StopASounds("/music/Laser_Shoot.wav");
+        Level().play("/music/Laser_Shoot.wav");
     }
 
     /**
-     * check the bounds 
-     * if within move else destroys it and removes from ILevel Collection
+     * check the bounds if within move else destroys it and removes from ILevel
+     * Collection
      */
     @Override
     public void doMove() {
@@ -71,6 +74,7 @@ public class Bullet extends IDrawable {
 
     /**
      * draws the bubllet
+     *
      * @param gd
      */
     @Override
@@ -81,6 +85,7 @@ public class Bullet extends IDrawable {
     /**
      *
      * damages IDestroyables then deletes self
+     *
      * @param id
      */
     @Override

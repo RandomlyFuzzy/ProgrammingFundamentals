@@ -9,6 +9,7 @@ import com.Liamengine.Engine.AbstractClasses.IDrawable;
 import com.Liamengine.Engine.Components.Transform;
 import com.Liamengine.Engine.Components.Vector;
 import com.Liamengine.Engine.Entry.Game;
+import com.Liamengine.Engine.Utils.MusicUtils;
 import com.Progfund.Object.Menu.LevelOverOverlay;
 import com.Progfund.Object.inGame.gunComponents.Gun;
 import com.Progfund.Object.inGame.gunComponents.Pistol;
@@ -67,6 +68,7 @@ public class Enemy extends IDestroyable {
             Player.addScore(getScore());
             Level().RemoveObject(this);
             IDestroyableManager.remove(this);
+            Level().play("/music/Hit_Hurt.wav");
             return;
         }
         //checks to see if outsides a range from the screen 

@@ -109,7 +109,7 @@ public class LevelSelect extends ILevel {
         // adds a mouse
         AddObject(new Mouse());
         //default scene
-        setBackgroundimage(GetSprite("/Images/backgrounds/background1.png"));
+//        setBackgroundimage(GetSprite("/Images/backgrounds/background1.png"));
     }
 
     /**

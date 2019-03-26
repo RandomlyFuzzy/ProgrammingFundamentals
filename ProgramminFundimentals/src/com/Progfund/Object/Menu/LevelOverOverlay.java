@@ -54,6 +54,12 @@ public class LevelOverOverlay extends IDrawable {
     private static Button saveButton;
 
     /**
+     * the button that saves things just used to change its value later
+     */
+    private double loadedTime;
+    
+    
+    /**
      *
      * @return the current levels save button
      */
@@ -173,6 +179,8 @@ public class LevelOverOverlay extends IDrawable {
         }));
         //creates mouse
         Level().AddObject(new Mouse()).setScale(new Vector(4, 4));
+        //saves the current time
+        loadedTime = Level().getTime();
     }
 
     /**
@@ -207,8 +215,12 @@ public class LevelOverOverlay extends IDrawable {
         gd.drawString(Display, (int) ((Game.getWindowWidth() / 2) - (w / 2)), (int) (Game.getWindowHeight() * 0.095) + gd.getFont().getSize() / 2);
         gd.setColor(new Color(255, 255, 255));
         gd.setFont(f.deriveFont(f.getSize() * 2f));
-        w = gd.getFontMetrics().stringWidth("with " + Player.getPlayerScore() + " points");
-        gd.drawString("with " + Player.getPlayerScore() + " points", (int) ((Game.getWindowWidth() / 2) - (w / 2)), (int) (Game.getWindowHeight() * 0.4) + gd.getFont().getSize() / 2);
+        
+        //used string.formate to make a double go to 2 decimal places
+        String display = String.format("with " + Player.getPlayerScore() + " points and a time of %.2f seconds",((float)loadedTime));
+        
+        w = gd.getFontMetrics().stringWidth(display);
+        gd.drawString(display, (int) ((Game.getWindowWidth() / 2) - (w / 2)), (int) (Game.getWindowHeight() * 0.4) + gd.getFont().getSize() / 2);
         gd.setFont(f);
         gd.setColor(c);
     }

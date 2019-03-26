@@ -51,7 +51,7 @@ public class Button extends IDrawable {
         this.Message = Message;
         this.buttonDelegate = Logic;
         this.relpos = relpos;
-        GetSprite("/Images/Button.png");
+        GetSprite("/images/Button.png");
     }
 
     /**
